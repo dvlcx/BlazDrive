@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "/home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/scopedcss/projectbundle/BlazDrive.bundle.scp.css",
+      "PackagePath": "staticwebassets/BlazDrive.bundle.scp.css"
+    },
+    {
+      "Id": "/home/dvlcx/Projects/BlazDrive/wwwroot/app.css",
+      "PackagePath": "staticwebassets/app.css"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.BlazDrive.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.BlazDrive.props",
+      "PackagePath": "build\\BlazDrive.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.BlazDrive.props",
+      "PackagePath": "buildMultiTargeting\\BlazDrive.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.BlazDrive.props",
+      "PackagePath": "buildTransitive\\BlazDrive.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

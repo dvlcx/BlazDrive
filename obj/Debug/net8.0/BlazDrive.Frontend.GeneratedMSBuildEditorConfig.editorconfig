@@ -1,0 +1,75 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = BlazDrive.Frontend
+build_property.RootNamespace = BlazDrive.Frontend
+build_property.ProjectDir = /home/dvlcx/Projects/BlazDrive/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /home/dvlcx/Projects/BlazDrive
+build_property._RazorSourceGeneratorDebug = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/App.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Layout/AuthLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvQXV0aExheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Layout/EmptyLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvRW1wdHlMYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/LogInCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Mb2dJbkNhcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/NavBar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9OYXZCYXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Pages/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcnJvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Pages/Errors/Error404.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcnJvcnMvRXJyb3I0MDQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ib21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Pages/LogIn.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Mb2dJbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Pages/SignUp.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9TaWduVXAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Sb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/SignUpCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaWduVXBDYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9fSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-3adygjow0p

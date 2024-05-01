@@ -1,0 +1,77 @@
+{
+  "Version": 1,
+  "Hash": "4rY4txKNsdCqDUCydjnmfbXrClkC34NHNR7l3bduLR0=",
+  "Source": "BlazDrive",
+  "BasePath": "_content/BlazDrive",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "BlazDrive/wwwroot",
+      "Source": "BlazDrive",
+      "ContentRoot": "/home/dvlcx/Projects/BlazDrive/wwwroot/",
+      "BasePath": "_content/BlazDrive",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/scopedcss/bundle/BlazDrive.styles.css",
+      "SourceId": "BlazDrive",
+      "SourceType": "Computed",
+      "ContentRoot": "/home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/scopedcss/bundle/",
+      "BasePath": "_content/BlazDrive",
+      "RelativePath": "BlazDrive.styles.css",
+      "AssetKind": "All",
+      "AssetMode": "CurrentProject",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ApplicationBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/scopedcss/bundle/BlazDrive.styles.css"
+    },
+    {
+      "Identity": "/home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/scopedcss/projectbundle/BlazDrive.bundle.scp.css",
+      "SourceId": "BlazDrive",
+      "SourceType": "Computed",
+      "ContentRoot": "/home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/scopedcss/projectbundle/",
+      "BasePath": "_content/BlazDrive",
+      "RelativePath": "BlazDrive.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/scopedcss/projectbundle/BlazDrive.bundle.scp.css"
+    },
+    {
+      "Identity": "/home/dvlcx/Projects/BlazDrive/wwwroot/app.css",
+      "SourceId": "BlazDrive",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/dvlcx/Projects/BlazDrive/wwwroot/",
+      "BasePath": "_content/BlazDrive",
+      "RelativePath": "app.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/app.css"
+    }
+  ]
+}

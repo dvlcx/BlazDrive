@@ -1,0 +1,34 @@
+﻿@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+<NavBar IsLoggedIn="@Authenticated"/>
+@Body
+
+
+@code {
+    private bool Authenticated;
+
+    protected override void OnInitialized()
+    {
+        Task<AuthenticationState> _currentAuthenticationStateTask;
+
+        AuthenticationStateProvider.AuthenticationStateChanged += OnAuthenticationStateChanged;
+
+        _currentAuthenticationStateTask = AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        OnAuthenticationStateChanged(_currentAuthenticationStateTask);
+    }
+
+    private void OnAuthenticationStateChanged(Task<AuthenticationState> authenticationStateTask)
+    {
+        _ = InvokeAsync(async () =>
+        {
+            var authState = await authenticationStateTask;
+            var user = authState.User;
+
+
+            Authenticated = user.Identity?.IsAuthenticated ?? false;
+            StateHasChanged();
+        });
+    }
+
+  }
