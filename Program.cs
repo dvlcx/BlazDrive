@@ -23,6 +23,8 @@ public class Program
                 ops.Cookie.MaxAge = TimeSpan.FromMinutes(30);
                 ops.AccessDeniedPath = "/error";
             });
+        builder.Services.AddControllers();
+        builder.Services.AddMemoryCache();
         builder.Services.AddAuthorization();
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddDbContextFactory<AppDbContext>(options => 
@@ -43,10 +45,10 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseStaticFiles();
+        app.MapControllers();
         app.UseAntiforgery();
         app.UseAuthentication();
         app.UseAuthorization();
-        
 
         app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 

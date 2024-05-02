@@ -101,3 +101,4 @@
 /home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/BlazDrive.pdb
 /home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/BlazDrive.genruntimeconfig.cache
 /home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/ref/BlazDrive.dll
+/home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/BlazDrive.sourcelink.json

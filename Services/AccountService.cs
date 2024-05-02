@@ -12,20 +12,22 @@ using BCrypt.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Caching.Memory;
 namespace BlazDrive.Services
 {
     public class AccountService
     {
         private UserRepository _repoUser { get; set; }
         private FolderRepository _repoFolder { get; set; }
-
-        public AccountService(IDbContextFactory<AppDbContext> contextFactory)
+        private IMemoryCache _cache { get; set; }
+        public AccountService(IDbContextFactory<AppDbContext> contextFactory, IMemoryCache cache)
         {
             _repoUser = new UserRepository(contextFactory);
             _repoFolder = new FolderRepository(contextFactory);
+            _cache = cache;
         }
 
-        public async Task<bool> SignUp(string name, string email, string password, HttpContext httpContext)
+        public async Task<Guid?> SignUp(string name, string email, string password)
         {
             var guidUser = Guid.NewGuid();
             var passwordHashed = BCrypt.Net.BCrypt.HashPassword(password + guidUser.ToString());
@@ -33,14 +35,14 @@ namespace BlazDrive.Services
 
             await _repoFolder.AddAsync(new Folder(guidFolder, name + "_root", null, DateTime.Now));
             await _repoUser.AddAsync(new User(guidUser, name, email, passwordHashed, guidFolder));
-            return await LogIn(email, password, httpContext);
+            return await LogIn(email, password);
         }
 
-        public async Task<bool> LogIn(string email, string password, HttpContext httpContext)
+        public async Task<Guid?> LogIn(string email, string password)
         {
             var account = await _repoUser.GetByEmail(email);
-            if (account is null) return false;
-            if (!BCrypt.Net.BCrypt.Verify(password + account.Id.ToString(), account.Password)) return false;
+            if (account is null) return null;
+            if (!BCrypt.Net.BCrypt.Verify(password + account.Id.ToString(), account.Password)) return null;
             
             var claims = new List<Claim>
             {
@@ -50,9 +52,9 @@ namespace BlazDrive.Services
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
             
-            //await httpContext.SignInAsync(principal);
-
-            return true;
+            var cacheKey = Guid.NewGuid();
+            _cache.Set(cacheKey, principal);
+            return cacheKey;
         }
         public async Task<bool> CheckEmail(string email)
         {

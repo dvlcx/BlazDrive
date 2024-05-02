@@ -1,6 +1,6 @@
 @page "/signup"
 @layout AuthLayout
-
+@rendermode InteractiveServer
 @inject AccountService _accountService
 @inject NavigationManager _navigationManager
 
@@ -61,8 +61,6 @@
 
 @code
 {
-   [CascadingParameter]
-   private HttpContext? _httpContext { get; set; }
    private UserSignUp UserSignUp { get; set; } = new();
 
    private bool _isEmailUnique { get; set; } = true;
@@ -77,7 +75,8 @@
          return;
       }
       _isEmailUnique = true;
-      _isSignUpSuccesful = await _accountService.SignUp(UserSignUp.Name, UserSignUp.Email, UserSignUp.Password, _httpContext);
-      if (_isSignUpSuccesful) _navigationManager.NavigateTo("/");
+      var key = await _accountService.SignUp(UserSignUp.Name, UserSignUp.Email, UserSignUp.Password);
+      if (key is not null) _navigationManager.NavigateTo($"/login/{key}");
+      else _isSignUpSuccesful = false;
    }
 }
