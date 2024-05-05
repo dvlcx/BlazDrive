@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets/BlazDrive.bundle.scp.css"
     },
     {
+      "Id": "/home/dvlcx/Projects/BlazDrive/wwwroot/Images/default_avatar.png",
+      "PackagePath": "staticwebassets/Images/default_avatar.png"
+    },
+    {
       "Id": "/home/dvlcx/Projects/BlazDrive/wwwroot/app.css",
       "PackagePath": "staticwebassets/app.css"
     },

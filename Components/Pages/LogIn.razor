@@ -15,7 +15,7 @@
                      <h2 class="text-uppercase text-center mb-5">LOG IN</h2>
                      @if(!_isLoginSuccesful)
                      {
-                        <h3 class="text-danger text-center"><p>LogIn failed.</p></h3>
+                        <h3 class="text-danger text-center"><p>LogIn failed. Check your inputs.</p></h3>
                      }
                      <DataAnnotationsValidator />
                      <div class="mb-3">
@@ -45,10 +45,10 @@
 @code
 {
    private UserLogIn UserLogIn { get; set; } = new();
-   private bool _isLoginSuccesful { get; set; }
+   private bool _isLoginSuccesful { get; set; } = true;
    private async Task LogInClick()
    {
-      var key = _accountService.LogIn(UserLogIn.Email, UserLogIn.Password);
+      var key = await _accountService.LogIn(UserLogIn.Email, UserLogIn.Password);
       if (key is not null) _navigationManager.NavigateTo($"/login/{key}");
       else _isLoginSuccesful = false;
    }

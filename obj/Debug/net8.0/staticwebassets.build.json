@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "4rY4txKNsdCqDUCydjnmfbXrClkC34NHNR7l3bduLR0=",
+  "Hash": "iZOm2Kztrgw3xXzIEiTxrKStSZT/i/fBN241hg4dLdw=",
   "Source": "BlazDrive",
   "BasePath": "_content/BlazDrive",
   "Mode": "Default",
@@ -72,6 +72,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/app.css"
+    },
+    {
+      "Identity": "/home/dvlcx/Projects/BlazDrive/wwwroot/Images/default_avatar.png",
+      "SourceId": "BlazDrive",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/dvlcx/Projects/BlazDrive/wwwroot/",
+      "BasePath": "_content/BlazDrive",
+      "RelativePath": "Images/default_avatar.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/Images/default_avatar.png"
     }
   ]
 }

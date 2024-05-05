@@ -11,6 +11,7 @@ namespace BlazDrive.Models.Entities
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public byte[]? Avatar { get; set; }
         [ForeignKey("Folder")]
         public Guid RootFolderId { get; set; }
 
@@ -22,6 +23,7 @@ namespace BlazDrive.Models.Entities
             this.Email = email;
             this.Password = password;
             this.RootFolderId = rootFolderId;
+            this.Avatar = null;
         }
 
     }

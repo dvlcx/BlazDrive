@@ -13,6 +13,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Caching.Memory;
+using System.Drawing;
 namespace BlazDrive.Services
 {
     public class AccountService
@@ -44,9 +45,17 @@ namespace BlazDrive.Services
             if (account is null) return null;
             if (!BCrypt.Net.BCrypt.Verify(password + account.Id.ToString(), account.Password)) return null;
             
+            Guid avatarKey = Guid.NewGuid();
+            _cache.Set<string>(avatarKey, account.Avatar is null ?
+            Convert.ToBase64String(System.IO.File.ReadAllBytes("wwwroot/Images/default_avatar.png")) :
+            Convert.ToBase64String(System.IO.File.ReadAllBytes("wwwroot/Images/default_avatar.png")));
+
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, account.Name),
+                new Claim(ClaimTypes.Email, account.Email),
+                new Claim("AvatarKey", avatarKey.ToString()),
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
