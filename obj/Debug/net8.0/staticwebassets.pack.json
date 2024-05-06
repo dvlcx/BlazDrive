@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets/Images/default_avatar.png"
     },
     {
+      "Id": "/home/dvlcx/Projects/BlazDrive/wwwroot/Images/edit.png",
+      "PackagePath": "staticwebassets/Images/edit.png"
+    },
+    {
       "Id": "/home/dvlcx/Projects/BlazDrive/wwwroot/app.css",
       "PackagePath": "staticwebassets/app.css"
     },

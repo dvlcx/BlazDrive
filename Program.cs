@@ -30,7 +30,8 @@ public class Program
         builder.Services.AddDbContextFactory<AppDbContext>(options => 
             options.UseMySql(builder.Configuration.GetConnectionString("BlazDriveConnectionString"),
                 new MySqlServerVersion("11.2.3-MariaDB")));
-        builder.Services.AddSingleton<AccountService>();
+        builder.Services.AddSingleton<AccountMainService>();
+        builder.Services.AddSingleton<AccountEditService>();
 
         var app = builder.Build();
 

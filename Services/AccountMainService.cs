@@ -16,12 +16,12 @@ using Microsoft.Extensions.Caching.Memory;
 using System.Drawing;
 namespace BlazDrive.Services
 {
-    public class AccountService
+    public class AccountMainService
     {
         private UserRepository _repoUser { get; set; }
         private FolderRepository _repoFolder { get; set; }
         private IMemoryCache _cache { get; set; }
-        public AccountService(IDbContextFactory<AppDbContext> contextFactory, IMemoryCache cache)
+        public AccountMainService(IDbContextFactory<AppDbContext> contextFactory, IMemoryCache cache)
         {
             _repoUser = new UserRepository(contextFactory);
             _repoFolder = new FolderRepository(contextFactory);
@@ -53,6 +53,8 @@ namespace BlazDrive.Services
 
             var claims = new List<Claim>
             {
+
+                new Claim("Id", account.Id.ToString()),
                 new Claim(ClaimTypes.Name, account.Name),
                 new Claim(ClaimTypes.Email, account.Email),
                 new Claim("AvatarKey", avatarKey.ToString()),

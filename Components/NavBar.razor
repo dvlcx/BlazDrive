@@ -1,7 +1,5 @@
-@using Microsoft.Extensions.Caching.Memory
-@using System.Security.Claims
- @inject AuthenticationStateProvider s
- @inject IMemoryCache _cache
+@inject AuthenticationStateProvider _authStateProvider
+@inject IMemoryCache _cache
  <nav class="navbar bg-body-tertiary container-fluid p-2 justify-content-between">
         <a class="navbar-brand" href="/">Navbar</a>
         <form class="d-flex" role="search">
@@ -37,7 +35,7 @@
             private string? _avatar { get; set; } = null;
             protected override async Task OnInitializedAsync() 
             {
-                var state = await s.GetAuthenticationStateAsync();
+                var state = await _authStateProvider.GetAuthenticationStateAsync();
                 if(!state.User.Identity.IsAuthenticated) return;
                 var key = state.User.FindFirstValue("AvatarKey");
                 _avatar = _cache.Get(Guid.Parse(key))?.ToString();

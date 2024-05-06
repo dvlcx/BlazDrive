@@ -31,3 +31,30 @@ h1:focus {
 .dropdown-toggle[aria-expanded="true"]:after {
     transform: rotate(180deg); 
 }
+
+.edit-thumb-box {
+    display: inline-block !important;
+    position: relative !important;
+    overflow: hidden;
+
+  }
+  
+  .edit-thumb-box-overlay {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+  }
+  
+  
+  .edit-thumb-box :hover .edit-thumb-box-overlay {
+    visibility: visible;
+    opacity: 0.6;
+    transition-delay: 0s;
+    position: absolute;
+    background-image: url("./Images/edit.png");
+    width: 120%;
+    height: 110%;
+    background-size: cover;
+    background-position: -15.5px -15.5px;
+    cursor: pointer;
+  }

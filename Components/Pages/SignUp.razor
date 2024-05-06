@@ -1,7 +1,7 @@
 @page "/signup"
 @layout AuthLayout
 @rendermode InteractiveServer
-@inject AccountService _accountService
+@inject AccountMainService _accountMainService
 @inject NavigationManager _navigationManager
 
 <PageTitle>Sign Up</PageTitle>
@@ -69,13 +69,13 @@
 
    private async Task SignUpClick()
    {
-      if (await _accountService.CheckEmail(UserSignUp.Email))
+      if (await _accountMainService.CheckEmail(UserSignUp.Email))
       {
          _isEmailUnique = false;
          return;
       }
       _isEmailUnique = true;
-      var key = await _accountService.SignUp(UserSignUp.Name, UserSignUp.Email, UserSignUp.Password);
+      var key = await _accountMainService.SignUp(UserSignUp.Name, UserSignUp.Email, UserSignUp.Password);
       if (key is not null) _navigationManager.NavigateTo($"/login/{key}");
       else _isSignUpSuccesful = false;
    }
