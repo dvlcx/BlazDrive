@@ -30,6 +30,14 @@ namespace BlazDrive.Controllers
             return Redirect("/");
         } 
         
+        [Route("/re-login/{key}")]
+        public async Task<IActionResult> SettingsReLogIn(Guid key)
+        {
+            var pr = _cache.Get<ClaimsPrincipal>(key);
+            await HttpContext.SignInAsync(pr);
+            return Redirect("/settings");
+        }
+        
         [Route("/logout")]
         public async Task<IActionResult> Logout()
         {

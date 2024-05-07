@@ -102,3 +102,6 @@
 /home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/BlazDrive.genruntimeconfig.cache
 /home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/ref/BlazDrive.dll
 /home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/BlazDrive.sourcelink.json
+/home/dvlcx/Projects/BlazDrive/obj/Debug/net8.0/BlazDrive.MvcApplicationPartsAssemblyInfo.cs
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/FoolProof.Core.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Newtonsoft.Json.dll

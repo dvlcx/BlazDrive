@@ -28,7 +28,7 @@ namespace BlazDrive.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task DeleteByIdAsync(int id)
+        public Task DeleteByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -38,9 +38,12 @@ namespace BlazDrive.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<User> GetByIdAsync(int id)
+        public async Task<User?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            using (var context  = _contextFactory.CreateDbContext())
+            {
+                return await context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            }
         }
         public async Task<User?> GetByEmail(string email)
         {
@@ -58,9 +61,13 @@ namespace BlazDrive.Data.Repositories
             }
         }
 
-        public void Update(User entity)
+        public async Task UpdateAsync(User entity)
         {
-            throw new NotImplementedException();
+            using (var context = _contextFactory.CreateDbContext())
+            {
+                context.Update(entity); 
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

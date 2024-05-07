@@ -7,7 +7,7 @@
 <PageTitle>Sign Up</PageTitle>
 
 <EditForm Model="UserSignUp" OnValidSubmit="SignUpClick" class="vh-100 bg-secondary">
-<AuthCard>
+   <AuthCard>
                      <h2 class="text-uppercase text-center mb-5">Create an account</h2>
                      @if(!_isSignUpSuccesful)
                      {
@@ -47,7 +47,7 @@
                      <p class="text-center text-muted mt-3 mb-0">Already have an account? <a href="/login"
                         class="fw-bold text-body"><u>Login here</u></a></p>
                      <p class="text-center mt-3"><a href="/" class="fw-bold text-center text-body"><u>Home</u></a></p>
-</AuthCard>
+   </AuthCard>
 </EditForm>
 
 @code

@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "8gfzRIag9vVeynRwmsAMburP1A+9Yp1DqkHhUTlZO2IGJGLbaD+wI7GzbWfosKmknicaqq8KFZWa8pOVQqmH0A==",
+  "dgSpecHash": "q5DA2FK9BQK+K14F1/iUJztCWDa0EHiWhwfKPQVqvMXXLVON0G29oQ3XOAZ0jhG/vLdo0uIGNUynQfWgy886Pw==",
   "success": true,
   "projectFilePath": "/home/dvlcx/Projects/BlazDrive/BlazDrive.csproj",
   "expectedPackageFiles": [
     "/home/dvlcx/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",
+    "/home/dvlcx/.nuget/packages/foolproof.core/1.2.1/foolproof.core.1.2.1.nupkg.sha512",
     "/home/dvlcx/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/dvlcx/.nuget/packages/microsoft.bcl.asyncinterfaces/6.0.0/microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "/home/dvlcx/.nuget/packages/microsoft.codeanalysis.analyzers/3.3.3/microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",
@@ -30,6 +31,7 @@
     "/home/dvlcx/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
     "/home/dvlcx/.nuget/packages/mono.texttemplating/2.2.1/mono.texttemplating.2.2.1.nupkg.sha512",
     "/home/dvlcx/.nuget/packages/mysqlconnector/2.3.5/mysqlconnector.2.3.5.nupkg.sha512",
+    "/home/dvlcx/.nuget/packages/newtonsoft.json/13.0.2/newtonsoft.json.13.0.2.nupkg.sha512",
     "/home/dvlcx/.nuget/packages/pomelo.entityframeworkcore.mysql/8.0.2/pomelo.entityframeworkcore.mysql.8.0.2.nupkg.sha512",
     "/home/dvlcx/.nuget/packages/system.codedom/4.4.0/system.codedom.4.4.0.nupkg.sha512",
     "/home/dvlcx/.nuget/packages/system.collections.immutable/6.0.0/system.collections.immutable.6.0.0.nupkg.sha512",

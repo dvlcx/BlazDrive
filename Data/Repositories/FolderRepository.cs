@@ -29,7 +29,7 @@ namespace BlazDrive.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task DeleteByIdAsync(int id)
+        public Task DeleteByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -39,16 +39,17 @@ namespace BlazDrive.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Folder> GetByIdAsync(int id)
+        public Task<Folder> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Folder entity)
+        public async Task UpdateAsync(Folder entity)
         {
             using (var context = _contextFactory.CreateDbContext())
             {
                 context.Update(entity);
+                await context.SaveChangesAsync();
             }
         }
 

@@ -15,6 +15,43 @@
           }
         }
       },
+      "FoolProof.Core/1.2.1": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.2"
+        },
+        "compile": {
+          "lib/net7.0/FoolProof.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net7.0/FoolProof.Core.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "contentFiles": {
+          "contentFiles/any/net7.0/Scripts/mvcfoolproof.core.js": {
+            "buildAction": "Content",
+            "codeLanguage": "any",
+            "copyToOutput": false
+          },
+          "contentFiles/any/net7.0/Scripts/mvcfoolproof.jquery.validation.js": {
+            "buildAction": "Content",
+            "codeLanguage": "any",
+            "copyToOutput": false
+          },
+          "contentFiles/any/net7.0/Scripts/mvcfoolproof.msajax.validation.js": {
+            "buildAction": "Content",
+            "codeLanguage": "any",
+            "copyToOutput": false
+          },
+          "contentFiles/any/net7.0/Scripts/mvcfoolproof.unobtrusive.js": {
+            "buildAction": "Content",
+            "codeLanguage": "any",
+            "copyToOutput": false
+          }
+        }
+      },
       "Humanizer.Core/2.14.1": {
         "type": "package",
         "compile": {
@@ -603,6 +640,19 @@
           }
         }
       },
+      "Newtonsoft.Json/13.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Pomelo.EntityFrameworkCore.MySql/8.0.2": {
         "type": "package",
         "dependencies": {
@@ -919,6 +969,47 @@
         "lib/netstandard2.1/BCrypt.Net-Next.dll",
         "lib/netstandard2.1/BCrypt.Net-Next.xml",
         "readme.md"
+      ]
+    },
+    "FoolProof.Core/1.2.1": {
+      "sha512": "mXBpEefjmqqGBZrxVT30i7+VEk+SQPE7TjsOy8qTxrFq7v0ZXFDln43Nl5ZmGAwWnHF8pgr9a5c1yMXUQrIIOg==",
+      "type": "package",
+      "path": "foolproof.core/1.2.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/Scripts/mvcfoolproof.core.js",
+        "content/Scripts/mvcfoolproof.jquery.validation.js",
+        "content/Scripts/mvcfoolproof.msajax.validation.js",
+        "content/Scripts/mvcfoolproof.unobtrusive.js",
+        "contentFiles/any/net472/Scripts/mvcfoolproof.core.js",
+        "contentFiles/any/net472/Scripts/mvcfoolproof.jquery.validation.js",
+        "contentFiles/any/net472/Scripts/mvcfoolproof.msajax.validation.js",
+        "contentFiles/any/net472/Scripts/mvcfoolproof.unobtrusive.js",
+        "contentFiles/any/net6.0/Scripts/mvcfoolproof.core.js",
+        "contentFiles/any/net6.0/Scripts/mvcfoolproof.jquery.validation.js",
+        "contentFiles/any/net6.0/Scripts/mvcfoolproof.msajax.validation.js",
+        "contentFiles/any/net6.0/Scripts/mvcfoolproof.unobtrusive.js",
+        "contentFiles/any/net7.0/Scripts/mvcfoolproof.core.js",
+        "contentFiles/any/net7.0/Scripts/mvcfoolproof.jquery.validation.js",
+        "contentFiles/any/net7.0/Scripts/mvcfoolproof.msajax.validation.js",
+        "contentFiles/any/net7.0/Scripts/mvcfoolproof.unobtrusive.js",
+        "contentFiles/any/netcoreapp3.1/Scripts/mvcfoolproof.core.js",
+        "contentFiles/any/netcoreapp3.1/Scripts/mvcfoolproof.jquery.validation.js",
+        "contentFiles/any/netcoreapp3.1/Scripts/mvcfoolproof.msajax.validation.js",
+        "contentFiles/any/netcoreapp3.1/Scripts/mvcfoolproof.unobtrusive.js",
+        "contentFiles/any/netstandard2.0/Scripts/mvcfoolproof.core.js",
+        "contentFiles/any/netstandard2.0/Scripts/mvcfoolproof.jquery.validation.js",
+        "contentFiles/any/netstandard2.0/Scripts/mvcfoolproof.msajax.validation.js",
+        "contentFiles/any/netstandard2.0/Scripts/mvcfoolproof.unobtrusive.js",
+        "foolproof.core.1.2.1.nupkg.sha512",
+        "foolproof.core.nuspec",
+        "lib/net472/FoolProof.Core.dll",
+        "lib/net6.0/FoolProof.Core.dll",
+        "lib/net7.0/FoolProof.Core.dll",
+        "lib/netcoreapp3.1/FoolProof.Core.dll",
+        "lib/netstandard2.0/FoolProof.Core.dll",
+        "license.txt"
       ]
     },
     "Humanizer.Core/2.14.1": {
@@ -1902,6 +1993,36 @@
         "mysqlconnector.nuspec"
       ]
     },
+    "Newtonsoft.Json/13.0.2": {
+      "sha512": "R2pZ3B0UjeyHShm9vG+Tu0EBb2lC8b0dFzV9gVn50ofHXh9Smjk6kTn7A/FdAsC8B5cKib1OnGYOXxRBz5XQDg==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/net6.0/Newtonsoft.Json.dll",
+        "lib/net6.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.2.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
     "Pomelo.EntityFrameworkCore.MySql/8.0.2": {
       "sha512": "XjnlcxVBLnEMbyEc5cZzgZeDyLvAniACZQ04W1slWN0f4rmfNzl98gEMvHnFH0fMDF06z9MmgGi/Sr7hJ+BVnw==",
       "type": "package",
@@ -2344,6 +2465,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "BCrypt.Net-Next >= 4.0.3",
+      "FoolProof.Core >= 1.2.1",
       "Microsoft.EntityFrameworkCore >= 8.0.4",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.4",
       "Pomelo.EntityFrameworkCore.MySql >= 8.0.2"
@@ -2394,6 +2516,10 @@
           "BCrypt.Net-Next": {
             "target": "Package",
             "version": "[4.0.3, )"
+          },
+          "FoolProof.Core": {
+            "target": "Package",
+            "version": "[1.2.1, )"
           },
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",

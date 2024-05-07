@@ -48,12 +48,11 @@ namespace BlazDrive.Services
             Guid avatarKey = Guid.NewGuid();
             _cache.Set<string>(avatarKey, account.Avatar is null ?
             Convert.ToBase64String(System.IO.File.ReadAllBytes("wwwroot/Images/default_avatar.png")) :
-            Convert.ToBase64String(System.IO.File.ReadAllBytes("wwwroot/Images/default_avatar.png")));
+            Convert.ToBase64String(account.Avatar));
 
 
             var claims = new List<Claim>
             {
-
                 new Claim("Id", account.Id.ToString()),
                 new Claim(ClaimTypes.Name, account.Name),
                 new Claim(ClaimTypes.Email, account.Email),
@@ -67,6 +66,7 @@ namespace BlazDrive.Services
             _cache.Set(cacheKey, principal);
             return cacheKey;
         }
+        
         public async Task<bool> CheckEmail(string email)
         {
             return await _repoUser.EmailExists(email);
