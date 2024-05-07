@@ -22,16 +22,12 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/dvlcx/Projects/BlazDrive/Components/Layout/AuthLayout.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvQXV0aExheW91dC5yYXpvcg==
+[/home/dvlcx/Projects/BlazDrive/Components/AuthCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BdXRoQ2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/dvlcx/Projects/BlazDrive/Components/Layout/EmptyLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvRW1wdHlMYXlvdXQucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[/home/dvlcx/Projects/BlazDrive/Components/LogInCard.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Mb2dJbkNhcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/dvlcx/Projects/BlazDrive/Components/NavBar.razor]
@@ -64,10 +60,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/home/dvlcx/Projects/BlazDrive/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Sb3V0ZXMucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[/home/dvlcx/Projects/BlazDrive/Components/SignUpCard.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaWduVXBDYXJkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/dvlcx/Projects/BlazDrive/Components/_Imports.razor]
