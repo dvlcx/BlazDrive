@@ -49,23 +49,38 @@ namespace BlazDrive.Services
             return cacheKey;
         }
 
-        public async Task EditAccountAsync(string id, string name, string email, string password)
+        public async Task<Guid> EditAccountAsync(string id, string name, string email, string password, string avatarKey)
         {
             var user = await _repoUser.GetByIdAsync(Guid.Parse(id));
-            if(user is null) return;
+            if(user is null) return Guid.Empty;
             password = BCrypt.Net.BCrypt.HashPassword(password + id);
-            if(name is not null || name != user.Name)
+            if(name is not null && name != user.Name)
             {
-
+                user.Name = name;
             }
-            if (email is not null || email != user.Email)
+            if (email is not null && email != user.Email)
             {
-
+                user.Email = email;
             }
-            if (password is not null || BCrypt.Net.BCrypt.Verify(password, user.Password))
+            if (password is not null && BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
-
+                user.Password = password;
             }
+            await _repoUser.UpdateAsync(user);
+
+            var claims = new List<Claim>
+            {
+                new Claim("Id", user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("AvatarKey", avatarKey.ToString()),
+            };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+            var cacheKey = Guid.NewGuid();
+            _cache.Set(cacheKey, principal);
+            return cacheKey;
         }
     }
 }

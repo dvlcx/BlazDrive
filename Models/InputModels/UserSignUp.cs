@@ -21,8 +21,9 @@ namespace BlazDrive.Models
 
         [Required(ErrorMessage = "Required.")]
         [DisplayFormat(ConvertEmptyStringToNull = true)]
-        [MinLength(8, ErrorMessage = "Password must be longer than 6 chars.")]
+        [MinLength(6, ErrorMessage = "Password must be longer than 6 chars.")]
         [MaxLength(30, ErrorMessage = "Password must be shorter than 30 chars.")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*#?&])[!-~]{4,}$", ErrorMessage = "Password must contain at least 1 special char, 1 number and 1 uppercase letter")]
         public string? Password { get; set; }
 
         [Required(ErrorMessage = "Required.")]

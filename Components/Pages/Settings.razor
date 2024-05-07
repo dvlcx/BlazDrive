@@ -65,8 +65,10 @@
                   <p class="small text-muted mb-2">To create a new password, you have to meet all of the following requirements:</p>
                   <ul class="small text-muted pl-4 mb-0">
                      <li>Minimum 6 character</li>
+                     <li>At least one uppercase letter</li>
                      <li>At least one special character</li>
                      <li>At least one number</li>
+                     <li>Different from old one</li>
                   </ul>
                </div>
             </div>
@@ -84,6 +86,7 @@
    private UserEditInput _userEditInput { get; set; } = new();
    private string _avatar { get; set; } = null;
    private byte[] _newAvatar { get; set; } = null;
+   private string _avatarKey {get; set; }
    private string _id { get; set; } = string.Empty;
    protected override async Task OnInitializedAsync()
    {
@@ -92,9 +95,8 @@
 
       _id = state.User.FindFirstValue("Id") + "";
 
-      var key = state.User.FindFirstValue("AvatarKey");
-      _avatar = _cache.Get(Guid.Parse(key))?.ToString();
-   
+      _avatarKey = state.User.FindFirstValue("AvatarKey");
+      _avatar = _cache.Get(Guid.Parse(_avatarKey))?.ToString();
       
       _userEditInput.NewName = state.User.Identity.Name;
       _userEditInput.NewEmail = state.User.FindFirstValue(ClaimTypes.Email);
@@ -102,7 +104,8 @@
 
    private async Task SaveChangesClick()
    {
-      await _accountEditService.EditAccountAsync(_id, _userEditInput.NewName, _userEditInput.NewEmail, _userEditInput.NewPassword);
+      var key = await _accountEditService.EditAccountAsync(_id, _userEditInput.NewName, _userEditInput.NewEmail, _userEditInput.NewPassword, _avatarKey);
+      _navigationManager.NavigateTo($"/re-login/{key}");
    }    
    private async Task LoadFiles(InputFileChangeEventArgs e)
    {

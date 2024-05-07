@@ -23,6 +23,7 @@ namespace BlazDrive.Models.InputModels
         public string? OldPassword { get; set; }
         [DisplayFormat(ConvertEmptyStringToNull = true)]
         [NotEqualTo(nameof(OldPassword))]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*#?&])[!-~]{4,}$", ErrorMessage = "Password must contain at least 1 special char, 1 number and 1 uppercase letter")]
         public string? NewPassword { get; set; }
         [DisplayFormat(ConvertEmptyStringToNull = true)]
         [Compare(nameof(this.NewPassword), ErrorMessage = "Passwords do not match.")]
