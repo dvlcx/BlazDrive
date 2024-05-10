@@ -22,16 +22,12 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/dvlcx/Projects/BlazDrive/Components/AuthCard.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BdXRoQ2FyZC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [/home/dvlcx/Projects/BlazDrive/Components/Layout/EmptyLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvRW1wdHlMYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/dvlcx/Projects/BlazDrive/Components/NavBar.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9OYXZCYXIucmF6b3I=
+[/home/dvlcx/Projects/BlazDrive/Components/Pages/AuthCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9BdXRoQ2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/dvlcx/Projects/BlazDrive/Components/Pages/Error.razor]
@@ -42,12 +38,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcnJvcnMvRXJyb3I0MDQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/dvlcx/Projects/BlazDrive/Components/Pages/Footer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Gb290ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/dvlcx/Projects/BlazDrive/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ib21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/dvlcx/Projects/BlazDrive/Components/Pages/LogIn.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Mb2dJbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Pages/NavBar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9OYXZCYXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/dvlcx/Projects/BlazDrive/Components/Pages/Settings.razor]

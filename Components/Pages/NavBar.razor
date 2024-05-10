@@ -1,15 +1,21 @@
 @inject AuthenticationStateProvider _authStateProvider
 @inject IMemoryCache _cache
- <nav class="navbar bg-body-tertiary container-fluid p-2 justify-content-between">
-        <a class="navbar-brand" href="/">Navbar</a>
+
+ <nav class="navbar  container-fluid p-2 justify-content-between" style="@Style" >
+        <a class="navbar-brand @TextClass" href="/">
+            <img src="Images/logo.png" width="70px" style=" margin-top: -20px; margin-bottom: -15px;"/>
+            BlazDrive
+        </a>
+        <AuthorizeView>
+            <Authorized>
         <form class="d-flex" role="search">
               <div class="input-group">
             <input class="form-control" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
               </div>
-        </form>
-            <AuthorizeView>
-                <Authorized>
+        </form> 
+
+                
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" >
                             <img src="data:image;base64,@_avatar" width="40" height="40" class="rounded-circle">
@@ -32,6 +38,10 @@
 
     @code
     {
+        [Parameter]
+        public string? Style {get; set;}
+        [Parameter]
+        public string? TextClass {get; set;}
             private string? _avatar { get; set; } = null;
             protected override async Task OnInitializedAsync() 
             {

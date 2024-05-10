@@ -13,6 +13,18 @@
       "PackagePath": "staticwebassets/Images/edit.png"
     },
     {
+      "Id": "/home/dvlcx/Projects/BlazDrive/wwwroot/Images/logo.png",
+      "PackagePath": "staticwebassets/Images/logo.png"
+    },
+    {
+      "Id": "/home/dvlcx/Projects/BlazDrive/wwwroot/Images/main.jpg",
+      "PackagePath": "staticwebassets/Images/main.jpg"
+    },
+    {
+      "Id": "/home/dvlcx/Projects/BlazDrive/wwwroot/Images/main_divider.png",
+      "PackagePath": "staticwebassets/Images/main_divider.png"
+    },
+    {
       "Id": "/home/dvlcx/Projects/BlazDrive/wwwroot/app.css",
       "PackagePath": "staticwebassets/app.css"
     },
