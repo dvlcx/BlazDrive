@@ -37,6 +37,14 @@ namespace BlazDrive.Data.Repositories
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<Drive.File>> GetByFolderId(Guid parentId)
+        {
+            using (var context  = _contextFactory.CreateDbContext())
+            {
+                return await context.Files.Where(x => x.ParentFolderId == parentId).ToListAsync();
+            }
+        }
+
         public Task<Drive.File> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();

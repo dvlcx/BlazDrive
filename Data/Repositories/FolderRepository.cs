@@ -39,9 +39,20 @@ namespace BlazDrive.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Folder> GetByIdAsync(Guid id)
+        public async Task<Folder?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            using (var context  = _contextFactory.CreateDbContext())
+            {
+                return await context.Folders.FirstOrDefaultAsync(x => x.Id == id);
+            }
+        }
+
+        public async Task<IEnumerable<Folder>> GetByParentId(Guid parentId)
+        {
+            using (var context  = _contextFactory.CreateDbContext())
+            {
+                return await context.Folders.Where(x => x.ParentFolderId == parentId).ToListAsync();
+            }
         }
 
         public async Task UpdateAsync(Folder entity)

@@ -40,6 +40,7 @@ namespace BlazDrive.Services
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("AvatarKey", avatarKey.ToString()),
+                new Claim("RootFolderId", user.RootFolderId.ToString()),
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

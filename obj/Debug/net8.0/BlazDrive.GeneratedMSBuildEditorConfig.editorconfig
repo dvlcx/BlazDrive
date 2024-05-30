@@ -26,8 +26,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvRW1wdHlMYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/dvlcx/Projects/BlazDrive/Components/Pages/AuthCard.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9BdXRoQ2FyZC5yYXpvcg==
+[/home/dvlcx/Projects/BlazDrive/Components/Pages/BlazDriveStorage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9CbGF6RHJpdmVTdG9yYWdlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/dvlcx/Projects/BlazDrive/Components/Pages/Error.razor]
@@ -38,20 +38,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcnJvcnMvRXJyb3I0MDQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/dvlcx/Projects/BlazDrive/Components/Pages/Footer.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Gb290ZXIucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
 [/home/dvlcx/Projects/BlazDrive/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ib21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/dvlcx/Projects/BlazDrive/Components/Pages/LogIn.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Mb2dJbi5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[/home/dvlcx/Projects/BlazDrive/Components/Pages/NavBar.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9OYXZCYXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/dvlcx/Projects/BlazDrive/Components/Pages/Settings.razor]
@@ -64,6 +56,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/home/dvlcx/Projects/BlazDrive/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Sb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Shared/AuthCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvQXV0aENhcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Shared/ExplorerItem.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvRXhwbG9yZXJJdGVtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Shared/Footer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvRm9vdGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Shared/NavBar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvTmF2QmFyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/dvlcx/Projects/BlazDrive/Components/Shared/ProviderCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvUHJvdmlkZXJDYXJkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/dvlcx/Projects/BlazDrive/Components/_Imports.razor]

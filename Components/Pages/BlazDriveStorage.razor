@@ -1,0 +1,119 @@
+@page "/blazdrive"  
+@layout EmptyLayout
+@inject AccountInfoService _accountInfoService
+@inject BlazDriveStorageService _blazDriveService
+
+	<link rel="stylesheet" href="BlazDriveStorage.css?" />
+<NavBar />
+<div class="container flex-grow-1 light-style container-p-y">
+    <div class="container-m-nx container-m-ny bg-lightest mb-3">
+        <ol class="breadcrumb text-big container-p-x py-3 m-0">
+            <li class="breadcrumb-item">
+                <a href="javascript:void(0)">home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="javascript:void(0)">projects</a>
+            </li>
+            <li class="breadcrumb-item active">site</li>
+        </ol>
+
+        <hr class="m-0" />
+
+        <div class="file-manager-actions container-p-x py-2">
+            <div>
+                <button type="button" class="btn btn-primary me-2">
+					<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M6.3414 6.15897C7.16507 3.73597 9.38755 2 12 2C15.3137 2 18 4.79305 18 8.23846C20.2091 8.23846 22 10.1005 22 12.3974C22 13.9368 21.1956 15.2809 20 16M6.32069 6.20644C3.8806 6.55106 2 8.72597 2 11.3576C2 13.0582 2.7854 14.5682 3.99965 15.5167" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M8 16L12 12M12 12L16 16M12 12V22" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					Upload
+				</button>
+                <button type="button" class="btn btn-secondary icon-btn me-2" disabled="">
+					<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M6.3414 6.15897C7.16507 3.73597 9.38755 2 12 2C15.3137 2 18 4.79305 18 8.23846C20.2091 8.23846 22 10.1005 22 12.3974C22 13.9368 21.1956 15.2809 20 16M6.32069 6.20644C3.8806 6.55106 2 8.72597 2 11.3576C2 13.0582 2.7854 14.5682 3.99965 15.5167" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M8 18L12 22M12 22L16 18M12 22V12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</button>
+                <button type="button" class="btn btn-secondary icon-btn me-2">
+                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.85929 1.25001C6.88904 1.25001 6.91919 1.25002 6.94976 1.25002L6.98675 1.25001C7.33818 1.24999 7.56433 1.24998 7.78542 1.27065C8.7367 1.35961 9.63905 1.73337 10.3746 2.34313C10.5456 2.48485 10.7055 2.64477 10.954 2.89329L11.5303 3.46969C12.3761 4.3154 12.7012 4.6311 13.0768 4.84005C13.2948 4.96134 13.526 5.05713 13.766 5.12552C14.1793 5.24333 14.6324 5.25002 15.8284 5.25002L16.253 5.25002C17.526 5.25 18.5521 5.24998 19.364 5.35206C20.2054 5.45784 20.9204 5.68358 21.5077 6.21185C21.6061 6.30032 21.6997 6.39394 21.7882 6.49231C22.3165 7.07965 22.5422 7.79459 22.648 8.63601C22.75 9.4479 22.75 10.4741 22.75 11.747V14.0564C22.75 15.8942 22.75 17.3498 22.5969 18.489C22.4393 19.6615 22.1071 20.6104 21.3588 21.3588C20.6104 22.1071 19.6615 22.4393 18.489 22.5969C17.3498 22.75 15.8942 22.75 14.0564 22.75H9.94361C8.10584 22.75 6.65021 22.75 5.51099 22.5969C4.33857 22.4393 3.38962 22.1071 2.64126 21.3588C1.8929 20.6104 1.56078 19.6615 1.40315 18.489C1.24999 17.3498 1.25 15.8942 1.25002 14.0564L1.25002 6.94976C1.25002 6.91919 1.25001 6.88904 1.25001 6.85929C1.2499 6.06338 1.24982 5.55685 1.33237 5.11935C1.6949 3.19788 3.19788 1.6949 5.11935 1.33237C5.55685 1.24982 6.06338 1.2499 6.85929 1.25001ZM6.94976 2.75002C6.03312 2.75002 5.67873 2.75329 5.39746 2.80636C4.08277 3.05441 3.05441 4.08277 2.80636 5.39746C2.75329 5.67873 2.75002 6.03312 2.75002 6.94976V14C2.75002 15.9068 2.75161 17.2615 2.88978 18.2892C3.02504 19.2953 3.27871 19.8749 3.70192 20.2981C4.12513 20.7213 4.70478 20.975 5.71087 21.1103C6.73853 21.2484 8.0932 21.25 10 21.25H14C15.9068 21.25 17.2615 21.2484 18.2892 21.1103C19.2953 20.975 19.8749 20.7213 20.2981 20.2981C20.7213 19.8749 20.975 19.2953 21.1103 18.2892C21.2484 17.2615 21.25 15.9068 21.25 14V11.7979C21.25 10.4621 21.2486 9.5305 21.1597 8.82312C21.0731 8.13448 20.9141 7.76356 20.6729 7.49539C20.6198 7.43637 20.5637 7.3802 20.5046 7.32712C20.2365 7.08592 19.8656 6.92692 19.1769 6.84034C18.4695 6.75141 17.538 6.75002 16.2021 6.75002H15.8284C15.7912 6.75002 15.7545 6.75002 15.7182 6.75003C14.6702 6.75025 13.9944 6.75038 13.3548 6.56806C13.0041 6.46811 12.6661 6.32811 12.3475 6.15083C11.7663 5.82747 11.2885 5.3495 10.5476 4.60833C10.522 4.58265 10.496 4.55666 10.4697 4.53035L9.91943 3.98009C9.63616 3.69682 9.52778 3.58951 9.41731 3.49793C8.91403 3.08073 8.29664 2.825 7.64576 2.76413C7.50289 2.75077 7.35038 2.75002 6.94976 2.75002ZM12 11.25C12.4142 11.25 12.75 11.5858 12.75 12V13.25H14C14.4142 13.25 14.75 13.5858 14.75 14C14.75 14.4142 14.4142 14.75 14 14.75H12.75V16C12.75 16.4142 12.4142 16.75 12 16.75C11.5858 16.75 11.25 16.4142 11.25 16V14.75H10C9.5858 14.75 9.25002 14.4142 9.25002 14C9.25002 13.5858 9.5858 13.25 10 13.25H11.25V12C11.25 11.5858 11.5858 11.25 12 11.25Z" fill="#1C274C"/>
+                    </svg>
+				</button>
+                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                    <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11 3H13C13.5523 3 14 3.44772 14 4V4.56879C14 4.99659 14.2871 5.36825 14.6822 5.53228C15.0775 5.69638 15.5377 5.63384 15.8403 5.33123L16.2426 4.92891C16.6331 4.53838 17.2663 4.53838 17.6568 4.92891L19.071 6.34312C19.4616 6.73365 19.4615 7.36681 19.071 7.75734L18.6688 8.1596C18.3661 8.46223 18.3036 8.92247 18.4677 9.31774C18.6317 9.71287 19.0034 10 19.4313 10L20 10C20.5523 10 21 10.4477 21 11V13C21 13.5523 20.5523 14 20 14H19.4312C19.0034 14 18.6318 14.2871 18.4677 14.6822C18.3036 15.0775 18.3661 15.5377 18.6688 15.8403L19.071 16.2426C19.4616 16.6331 19.4616 17.2663 19.071 17.6568L17.6568 19.071C17.2663 19.4616 16.6331 19.4616 16.2426 19.071L15.8403 18.6688C15.5377 18.3661 15.0775 18.3036 14.6822 18.4677C14.2871 18.6318 14 19.0034 14 19.4312V20C14 20.5523 13.5523 21 13 21H11C10.4477 21 10 20.5523 10 20V19.4313C10 19.0034 9.71287 18.6317 9.31774 18.4677C8.92247 18.3036 8.46223 18.3661 8.1596 18.6688L7.75732 19.071C7.36679 19.4616 6.73363 19.4616 6.34311 19.071L4.92889 17.6568C4.53837 17.2663 4.53837 16.6331 4.92889 16.2426L5.33123 15.8403C5.63384 15.5377 5.69638 15.0775 5.53228 14.6822C5.36825 14.2871 4.99659 14 4.56879 14H4C3.44772 14 3 13.5523 3 13V11C3 10.4477 3.44772 10 4 10L4.56877 10C4.99658 10 5.36825 9.71288 5.53229 9.31776C5.6964 8.9225 5.63386 8.46229 5.33123 8.15966L4.92891 7.75734C4.53838 7.36681 4.53838 6.73365 4.92891 6.34313L6.34312 4.92891C6.73365 4.53839 7.36681 4.53839 7.75734 4.92891L8.15966 5.33123C8.46228 5.63386 8.9225 5.6964 9.31776 5.53229C9.71288 5.36825 10 4.99658 10 4.56876V4C10 3.44772 10.4477 3 11 3Z" stroke="#000000" stroke-width="1.5"/>
+                        <path d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" stroke="#000000" stroke-width="1.5"/>
+                    </svg>
+                </a>
+                <ul class="dropdown-menu  dropdown-menu-end">
+                    <li><a class="dropdown-item" >Cut</a></li>
+                    <li><a class="dropdown-item" >Copy</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" >Delete</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-default icon-btn md-btn-flat active"> <input type="radio" name="file-manager-view" value="file-manager-col-view" checked="" /> <span class="ion ion-md-apps"></span> </label>
+                    <label class="btn btn-default icon-btn md-btn-flat"> <input type="radio" name="file-manager-view" value="file-manager-row-view" /> <span class="ion ion-md-menu"></span> </label>
+                </div>
+            </div>
+        </div>
+
+        <hr class="m-0" />
+    </div>
+
+    <div class="file-manager-container file-manager-col-view">
+        <div class="file-manager-row-header">
+            <div class="file-item-name pb-2">Filename</div>
+            <div class="file-item-changed pb-2">Changed</div>
+        </div>
+        @if (_renderReady)
+        {
+            @if (_currentFolder.ParentFolderId is not null)
+            {
+            <div class="file-item">
+                <div class="file-item-icon file-item-level-up fas fa-level-up-alt text-secondary"></div>
+                <a href="javascript:void(0)" class="file-item-name">
+                    ..
+                </a>
+            </div>
+            }
+
+            @foreach(var folder in _storage.Folders.Where(x => x.Id == _currentFolder.Id))
+            {
+                <ExplorerItem Name="@folder.Name" @bind-IsSelected=folder.IsSelected>
+                    <div class="file-item-img" style="background-image: url(https://bootdey.com/img/Content/avatar/avatar1.png);"></div>
+                </ExplorerItem>
+            }
+        }
+    </div>
+</div>
+
+@code
+{
+    private bool _renderReady = false;
+	private BlazDriveViewModel _storage;
+
+    private FolderViewModel _currentFolder;
+
+   	protected override async Task OnInitializedAsync()
+	{
+        await Refresh();
+	}
+
+    private async Task Refresh()
+    {
+        await _blazDriveService.RefreshAsync(Guid.Parse(await _accountInfoService.GetRootFolderId()));
+        _storage = _blazDriveService.BlazDriveViewModel;
+        var root = await _accountInfoService.GetRootFolderId();
+        _currentFolder = _storage.Folders.FirstOrDefault(x => x.Id == Guid.Parse(root));
+        _renderReady = true;
+    }
+
+    private async Task CreateFolderClick(string name)
+    {
+        await _blazDriveService.CreateFolder(_currentFolder.Id, name);
+        await Refresh();
+    }
+}

@@ -58,3 +58,41 @@ h1:focus {
     background-position: -15.5px -15.5px;
     cursor: pointer;
   }
+
+  .main-text
+  {
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
+  }
+
+  
+    .fm-file-box {
+        font-size: 25px;
+        background: #e9ecef;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: .25rem;
+    }
+
+    
+
+    .fm-icon-box {
+        font-size: 32px;
+        background: #ffffff;
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: .25rem;
+    }
+

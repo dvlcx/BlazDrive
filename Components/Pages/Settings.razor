@@ -84,19 +84,19 @@
 {
     
    private UserEditInput _userEditInput { get; set; } = new();
-   private string _avatar { get; set; } = null;
-   private byte[] _newAvatar { get; set; } = null;
+   private string _avatar { get; set; }
+   private byte[] _newAvatar { get; set; }
    private string _avatarKey {get; set; }
    private string _id { get; set; } = string.Empty;
+
    protected override async Task OnInitializedAsync()
    {
       var state = await _authStateProvider.GetAuthenticationStateAsync();
       if(!state.User.Identity.IsAuthenticated) return;
-
-      _id = state.User.FindFirstValue("Id") + "";
-
       _avatarKey = state.User.FindFirstValue("AvatarKey");
       _avatar = _cache.Get(Guid.Parse(_avatarKey))?.ToString();
+
+      _id = state.User.FindFirstValue("Id") + "";
       
       _userEditInput.NewName = state.User.Identity.Name;
       _userEditInput.NewEmail = state.User.FindFirstValue(ClaimTypes.Email);

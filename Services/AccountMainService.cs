@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Caching.Memory;
 using System.Drawing;
+using System.Data.SqlTypes;
 namespace BlazDrive.Services
 {
     public class AccountMainService
@@ -34,7 +35,8 @@ namespace BlazDrive.Services
             var passwordHashed = BCrypt.Net.BCrypt.HashPassword(password + guidUser.ToString());
             var guidFolder = Guid.NewGuid();
 
-            await _repoFolder.AddAsync(new Folder(guidFolder, name + "_root", null, DateTime.Now));
+            await _repoFolder.AddAsync(new Folder(guidFolder, name + "_root", null, DateTime.Now, guidFolder.ToString()));
+            Directory.CreateDirectory("Storage/" + guidFolder.ToString());
             await _repoUser.AddAsync(new User(guidUser, name, email, passwordHashed, guidFolder));
             return await LogIn(email, password);
         }
@@ -57,6 +59,7 @@ namespace BlazDrive.Services
                 new Claim(ClaimTypes.Name, account.Name),
                 new Claim(ClaimTypes.Email, account.Email),
                 new Claim("AvatarKey", avatarKey.ToString()),
+                new Claim("RootFolderId", account.RootFolderId.ToString()),
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

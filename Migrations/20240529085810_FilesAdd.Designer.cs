@@ -4,6 +4,7 @@ using BlazDrive.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazDrive.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240529085810_FilesAdd")]
+    partial class FilesAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,8 +44,9 @@ namespace BlazDrive.Migrations
                     b.Property<float>("Size")
                         .HasColumnType("float");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("UploadDate")
                         .HasColumnType("datetime(6)");
@@ -62,10 +66,6 @@ namespace BlazDrive.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("FullPath")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
