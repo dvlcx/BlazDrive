@@ -1,7 +1,7 @@
 <div class="file-item">
     <div class="file-item-select-bg bg-primary"></div>
     <label class="file-item-checkbox custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" @bind=IsSelected />
+        @CheckBox
         <span class="custom-control-label"></span>
     </label>
     @Preview
@@ -23,7 +23,9 @@
 @code
 {
     [Parameter]
-    public bool IsSelected{ get; set; }
+    public RenderFragment? CheckBox { get; set; }
+    [Parameter]
+    public EventCallback<bool> IsSelectedChanged { get; set; }
     [Parameter]
     public RenderFragment? Preview { get; set; }
     [Parameter]

@@ -22,9 +22,13 @@ namespace BlazDrive.Data.Repositories
             }
         }
 
-        public void Delete(Drive.File entity)
+        public async void Delete(Drive.File entity)
         {
-            throw new NotImplementedException();
+            using (var context = _contextFactory.CreateDbContext())
+            {
+                context.Files.Remove(entity);
+                await context.SaveChangesAsync();
+            }
         }
 
         public Task DeleteByIdAsync(Guid id)

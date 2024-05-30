@@ -17,6 +17,8 @@ namespace BlazDrive.Services
         private FileRepository _fileRepo;
 
         public BlazDriveViewModel BlazDriveViewModel { get; set; } = new BlazDriveViewModel();
+        public List<Folder> FoldersToRemove { get; set; } = [];
+
 
         public BlazDriveStorageService(IDbContextFactory<AppDbContext> contextFactory)
         {
@@ -24,7 +26,40 @@ namespace BlazDrive.Services
             _fileRepo = new FileRepository(contextFactory);
         }
 
-        public async Task RefreshAsync(Guid folderId)
+        public async Task RefreshFullAsync(Guid folderId)
+        {
+            BlazDriveViewModel = new BlazDriveViewModel();
+            var folder = await _folderRepo.GetByIdAsync(folderId);
+            var files = await _fileRepo.GetByFolderId(folderId);
+
+            foreach (var file in files)
+            {
+                BlazDriveViewModel.Files.Add(
+                    new FileViewModel()
+                    {
+                        Id = file.Id,
+                        Name = file.Name,
+                        Type = file.Type,
+                        Size = file.Size,
+                        CreationDate = file.CreationDate,
+                        UploadDate = file.UploadDate,
+                        ParentFolderId = file.ParentFolderId,
+                    }
+                );
+            }
+
+            BlazDriveViewModel.Folders.Add( new FolderViewModel()
+            {
+                Id = folder.Id,
+                Name = folder.Name,
+                ParentFolderId = folder.ParentFolderId,
+                CreationDate = folder.CreationDate,
+            });
+
+            await this.RefreshAsync(folder.Id);
+        }
+
+        private async Task RefreshAsync(Guid folderId)
         {
             var folders = await _folderRepo.GetByParentId(folderId);
             var files = await _fileRepo.GetByFolderId(folderId);
@@ -83,6 +118,55 @@ namespace BlazDrive.Services
                 DateTime.Now,
                 path
             ));
+        }
+
+        public async Task DeleteFolder(Guid folderId)
+        {
+            var folder = await _folderRepo.GetByIdAsync(folderId);
+            var files = await _fileRepo.GetByFolderId(folderId);
+
+            foreach (var file in files)
+            {
+                _fileRepo.Delete(file);
+            }
+            
+            FoldersToRemove.Add(folder);
+
+            await this.DeleteFolderRecursive(folder.Id);
+
+            FoldersToRemove.Reverse();
+            foreach (var x in FoldersToRemove)
+            {
+                _folderRepo.Delete(x);
+            }
+            FoldersToRemove = [];
+        }
+
+        public async Task DeleteFolderRecursive(Guid folderId)
+        {
+            var folders = await _folderRepo.GetByParentId(folderId);
+            var files = await _fileRepo.GetByFolderId(folderId);
+
+            foreach (var file in files)
+            {
+                _fileRepo.Delete(file);
+            }
+
+            foreach (var folder in folders)
+            {
+                FoldersToRemove.Add(folder);
+                await DeleteFolderRecursive(folder.Id);
+            }
+        }
+
+        public async Task UploadFile()
+        {
+
+        }
+
+        public async Task DeleteFile(Guid fileId)
+        {
+
         }
     }
 }
