@@ -1,4 +1,4 @@
-<div class="file-item">
+<div class="file-item" @onclick="OnClickCallback">
     <div class="file-item-select-bg bg-primary"></div>
     <label class="file-item-checkbox custom-control custom-checkbox">
         @CheckBox
@@ -30,4 +30,6 @@
     public RenderFragment? Preview { get; set; }
     [Parameter]
     public string Name { get; set; }
+    [Parameter]
+    public EventCallback OnClickCallback { get; set; }
 }

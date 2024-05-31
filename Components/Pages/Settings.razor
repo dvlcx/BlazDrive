@@ -1,9 +1,10 @@
 ﻿@page "/settings"
 @layout MainLayout
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(false))
 
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 @inject AuthenticationStateProvider _authStateProvider
+@inject AccountInfoService _accountInfoService
 @inject IMemoryCache _cache
 @inject AccountEditService _accountEditService
 @inject NavigationManager _navigationManager
@@ -86,27 +87,26 @@
    private UserEditInput _userEditInput { get; set; } = new();
    private string _avatar { get; set; }
    private byte[] _newAvatar { get; set; }
-   private string _avatarKey {get; set; }
    private string _id { get; set; } = string.Empty;
 
    protected override async Task OnInitializedAsync()
    {
       var state = await _authStateProvider.GetAuthenticationStateAsync();
       if(!state.User.Identity.IsAuthenticated) return;
-      _avatarKey = state.User.FindFirstValue("AvatarKey");
-      _avatar = _cache.Get(Guid.Parse(_avatarKey))?.ToString();
-
-      _id = state.User.FindFirstValue("Id") + "";
       
-      _userEditInput.NewName = state.User.Identity.Name;
-      _userEditInput.NewEmail = state.User.FindFirstValue(ClaimTypes.Email);
+      _avatar = await _accountInfoService.GetAvatar();
+      _id = (await _accountInfoService.GetGuid()).ToString();
+      
+      _userEditInput.NewName =  await _accountInfoService.GetName();
+      _userEditInput.NewEmail = await _accountInfoService.GetEmail();
    }
 
    private async Task SaveChangesClick()
    {
-      var key = await _accountEditService.EditAccountAsync(_id, _userEditInput.NewName, _userEditInput.NewEmail, _userEditInput.NewPassword, _avatarKey);
+      var key = await _accountEditService.EditAccountAsync(_id, _userEditInput.NewName, _userEditInput.NewEmail, _userEditInput.NewPassword, await _accountInfoService.GetAvatarKey());
       _navigationManager.NavigateTo($"/re-login/{key}");
    }    
+
    private async Task LoadFiles(InputFileChangeEventArgs e)
    {
       Guid key;
@@ -118,6 +118,6 @@
          key = await _accountEditService.EditAvatarAsync(_id, br);
       }
       _navigationManager.NavigateTo($"/re-login/{key}");
-
    }
+
 }

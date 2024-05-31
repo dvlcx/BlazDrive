@@ -96,10 +96,8 @@ namespace BlazDrive.Services
         public async Task CreateFolder(Guid parentFolder, string name)
         {
             var nid = Guid.NewGuid();
-
             string path = $"{parentFolder}/";
-            Guid? tmp = Guid.Empty;
-            var id = parentFolder;
+            Guid? tmp = parentFolder;
             while (tmp is not null)
             {
                 tmp = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
@@ -109,7 +107,7 @@ namespace BlazDrive.Services
                 }         
             }
 
-            Directory.CreateDirectory("Storage/" + path + nid);
+            // Directory.CreateDirectory("Storage/" + path + nid);
 
             await _folderRepo.AddAsync(new Folder(
                 nid,
@@ -135,8 +133,11 @@ namespace BlazDrive.Services
             await this.DeleteFolderRecursive(folder.Id);
 
             FoldersToRemove.Reverse();
+            
+            // Directory.Delete((await this.GetFolderPath(folderId)).Aggregate((i, j) => i + j), true);
+
             foreach (var x in FoldersToRemove)
-            {
+            {                
                 _folderRepo.Delete(x);
             }
             FoldersToRemove = [];
@@ -166,7 +167,42 @@ namespace BlazDrive.Services
 
         public async Task DeleteFile(Guid fileId)
         {
+            System.IO.File.Delete((await GetFilePath(fileId)).Aggregate((i, j) => i + j));
+            await _fileRepo.DeleteByIdAsync(fileId);
+        }
 
+        private async Task<List<string>> GetFolderPath(Guid folderId)
+        {
+            List<string> path = [$"{folderId}"];
+            Guid? tmp = folderId;
+            while (tmp is not null)
+            {
+                tmp = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
+                if (tmp is not null)
+                {
+                    path.Add($"{tmp}/");
+                }         
+            }
+            path.Add("Storage/");
+            path.Reverse();
+            return path;
+        }
+
+        private async Task<List<string>> GetFilePath(Guid fileId)
+        {
+            List<string> path = [$"{fileId}"];
+            Guid? tmp = (await _fileRepo.GetByIdAsync(fileId)).ParentFolderId;
+            while (tmp is not null)
+            {
+                tmp = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
+                if (tmp is not null)
+                {
+                    path.Add($"{tmp}/");
+                }         
+            }
+            path.Add("Storage/");
+            path.Reverse();
+            return path;
         }
     }
 }

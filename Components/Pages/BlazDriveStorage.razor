@@ -2,7 +2,7 @@
 @layout EmptyLayout
 @inject AccountInfoService _accountInfoService
 @inject BlazDriveStorageService _blazDriveService
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(false))
 
 <link rel="stylesheet" href="BlazDriveStorage.css?" />
 <NavBar />
@@ -86,7 +86,7 @@
             </div>
                 @if (_currentFolder.ParentFolderId is not null)
                 {
-                <div class="file-item">
+                <div class="file-item" @onclick="@(() => ChangeCurrentFolder(_storage.Folders.Find(x => x.Id == _currentFolder.ParentFolderId)))">
                     <div class="file-item-icon file-item-level-up fas fa-level-up-alt text-secondary"></div>
                     <a href="javascript:void(0)" class="file-item-name">
                         ..
@@ -96,7 +96,8 @@
 
                 @foreach(var folder in _storage.Folders.Where(x => x.ParentFolderId == _currentFolder.Id))
                 {
-                    <ExplorerItem Name="@folder.Name" >
+                    <ExplorerItem Name="@folder.Name" OnClickCallback="@(() => ChangeCurrentFolder(folder))">
+                        @* onclick="@(() => ChangeCurrentFolder(folder))" *@
                         <CheckBox>
                             <input type="checkbox" class="custom-control-input"  @bind-value="@folder.IsSelected">
                         </CheckBox>    
@@ -113,22 +114,22 @@
 {
     private bool _renderReady = false;
     private bool _showFolderNameField = false;
-	private BlazDriveViewModel _storage;
+    private BlazDriveViewModel _storage;
     private FolderViewModel _currentFolder;
-	private string _newFolderName;
+    private string _newFolderName;
 
-   	protected override async Task OnInitializedAsync()
-	{
+    protected override async Task OnInitializedAsync()
+    {
         await Refresh();
-	}
+        var root = await _accountInfoService.GetRootFolderId();
+        _currentFolder = _storage.Folders.FirstOrDefault(x => x.Id == Guid.Parse(root));
+        _renderReady = true;
+    }
 
     private async Task Refresh()
     {
         await _blazDriveService.RefreshFullAsync(Guid.Parse(await _accountInfoService.GetRootFolderId()));
         _storage = _blazDriveService.BlazDriveViewModel;
-        var root = await _accountInfoService.GetRootFolderId();
-        _currentFolder = _storage.Folders.FirstOrDefault(x => x.Id == Guid.Parse(root));
-        _renderReady = true;
     }
 
     private async Task CreateFolderClick(string name)
@@ -137,6 +138,7 @@
         await _blazDriveService.CreateFolder(_currentFolder.Id, name);
         await Refresh();
     }
+
     private async Task DeleteFolderClick(List<Guid> folderIds)
     {
         if (folderIds.Count == 0) return; 
@@ -147,6 +149,12 @@
 
         await Refresh();
     }
+
+    private void ChangeCurrentFolder(FolderViewModel folder)
+    {
+        _currentFolder = folder;
+    }
+
     private void ShowNewFolderNameField()
     {
         _showFolderNameField = !_showFolderNameField;
