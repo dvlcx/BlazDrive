@@ -1,11 +1,13 @@
-<div class="file-item" @onclick="OnClickCallback">
-    <div class="file-item-select-bg bg-primary"></div>
+<div class="file-item">
+    <div class="file-item-select-bg bg-primary" @onclick="OnClickCallback"></div>
     <label class="file-item-checkbox custom-control custom-checkbox">
         @CheckBox
         <span class="custom-control-label"></span>
     </label>
-    @Preview
-    <a href="javascript:void(0)" class="file-item-name">
+        <div @onclick="OnClickCallback">
+            @Preview
+        </div>
+    <a class="file-item-name" @onclick="OnClickCallback">
         @Name
     </a>
     @* <div class="file-item-changed">02/20/2018</div> *@

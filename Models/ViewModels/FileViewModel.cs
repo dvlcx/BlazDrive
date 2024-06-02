@@ -11,7 +11,6 @@ namespace BlazDrive.Models.ViewModels
         public string Name { get; set; }
         public FileType Type { get; set; }
         public float Size { get; set; }
-        public DateTime CreationDate { get; set; }
         public DateTime UploadDate { get; set; }    
         public Guid ParentFolderId {get; set;}  
         public bool IsSelected { get; set; } = false;    

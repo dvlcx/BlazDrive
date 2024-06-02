@@ -7,20 +7,19 @@ namespace BlazDrive.Models.Entities
         public string Name { get; set; }
         public FileType Type { get; set; }
         public float Size { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime UploadDate { get; set; }    
+         public DateTime UploadDate { get; set; }    
         [ForeignKey("Folder")]
         public Guid ParentFolderId {get; set;}
 
         public Folder Folder { get; set; }
 
-        public File(Guid id, string name, FileType type, float size, DateTime creationDate, DateTime UploadDate) : base(id)
+        public File(Guid id, string name, FileType type, float size, DateTime UploadDate, Guid parentFolderId) : base(id)
         {
             this.Name = name;
             this.Type = type;
             this.Size = size;
-            this.CreationDate = creationDate;
             this.UploadDate = UploadDate;
+            this.ParentFolderId = parentFolderId;
         }
     }
 }

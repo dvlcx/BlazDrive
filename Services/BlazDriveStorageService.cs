@@ -7,6 +7,7 @@ using BlazDrive.Data.Repositories;
 using BlazDrive.Models;
 using BlazDrive.Models.Entities;
 using BlazDrive.Models.ViewModels;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazDrive.Services
@@ -32,23 +33,8 @@ namespace BlazDrive.Services
             var folder = await _folderRepo.GetByIdAsync(folderId);
             var files = await _fileRepo.GetByFolderId(folderId);
 
-            foreach (var file in files)
-            {
-                BlazDriveViewModel.Files.Add(
-                    new FileViewModel()
-                    {
-                        Id = file.Id,
-                        Name = file.Name,
-                        Type = file.Type,
-                        Size = file.Size,
-                        CreationDate = file.CreationDate,
-                        UploadDate = file.UploadDate,
-                        ParentFolderId = file.ParentFolderId,
-                    }
-                );
-            }
-
-            BlazDriveViewModel.Folders.Add( new FolderViewModel()
+            BlazDriveViewModel.Folders.Add( 
+                new FolderViewModel()
             {
                 Id = folder.Id,
                 Name = folder.Name,
@@ -73,7 +59,6 @@ namespace BlazDrive.Services
                         Name = file.Name,
                         Type = file.Type,
                         Size = file.Size,
-                        CreationDate = file.CreationDate,
                         UploadDate = file.UploadDate,
                         ParentFolderId = file.ParentFolderId,
                     }
@@ -160,14 +145,42 @@ namespace BlazDrive.Services
             }
         }
 
-        public async Task UploadFile()
+        public async Task UploadFile(IReadOnlyList<IBrowserFile> files, string rootId, Guid parentFolderId)
         {
 
+                foreach (var file in files)
+                {
+                    var id = Guid.NewGuid();
+                    using (var fs = new FileStream($"Storage/{rootId}/{id}", FileMode.Create))
+                    {
+                        await file.OpenReadStream().CopyToAsync(fs);
+                        FileType type = 
+                        file.Name.Split('.').Last() switch 
+                        {
+                            "bmp" or "png" or "jpg" or "jpeg" or "webp" or "svg" =>  FileType.Image,
+                            "mp4" or "avi" or "wmv" or "mkv" or "mov" or "amv" or "mpg" =>  FileType.Video,
+                            "wav" or "mp3" or "wma" or "au" or "flac" or "wv" or "m4b" or "m4a" =>  FileType.Audio,
+                            "doc" or "docx" or "odt" or "pdf" or "xls" or "xlsx" or "ods" or "ppt" or "pptx" or "txt" =>  FileType.Document,
+                            "exe" or "bat" or "cmd" or "msi" or "ps1" or "apk" or "bin" or "sh" => FileType.Executable,
+                            "zip" or "iso" or "rar" or "lz" or "gz" or "br" or "bz2" or "7z" => FileType.Archive,
+                            _ => FileType.Other,
+                        };
+                        await _fileRepo.AddAsync(new Models.Entities.File(
+                        id,
+                        file.Name,
+                        type,
+                        file.Size,
+                        DateTime.Now,
+                        parentFolderId
+                        ));
+                    }
+                }
         }
 
         public async Task DeleteFile(Guid fileId)
         {
-            System.IO.File.Delete((await GetFilePath(fileId)).Aggregate((i, j) => i + j));
+            // System.IO.File.Delete((await GetFilePath(fileId)).Aggregate((i, j) => i + j));
+            System.IO.File.Delete($"Storage/{GetFileRootFolder(fileId)}/{fileId}");
             await _fileRepo.DeleteByIdAsync(fileId);
         }
 
@@ -203,6 +216,21 @@ namespace BlazDrive.Services
             path.Add("Storage/");
             path.Reverse();
             return path;
+        }
+
+        private async Task<string> GetFileRootFolder(Guid fileId)
+        {
+            string rootFolderId = string.Empty;
+            Guid? tmp = (await _fileRepo.GetByIdAsync(fileId)).ParentFolderId;
+            while (tmp is not null)
+            {
+                tmp = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
+                if (tmp is not null)
+                {
+                    rootFolderId = tmp.ToString();
+                }         
+            }
+            return rootFolderId;
         }
     }
 }

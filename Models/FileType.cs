@@ -3,11 +3,11 @@ namespace BlazDrive.Models
     public enum FileType
     {
         Image,
-        Text,
+        Video,
+        Audio,
         Document,
-        Presentation,
         Archive,
-        Executive,
+        Executable,
         Other
     }
 }

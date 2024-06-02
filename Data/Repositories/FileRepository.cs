@@ -18,7 +18,8 @@ namespace BlazDrive.Data.Repositories
         {
             using (var context = _contextFactory.CreateDbContext())
             {
-                // await context.Files.AddAsync(entity);
+                await context.Files.AddAsync(entity);
+                await context.SaveChangesAsync();
             }
         }
 
