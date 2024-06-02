@@ -61,6 +61,7 @@ namespace BlazDrive.Services
                         Size = file.Size,
                         UploadDate = file.UploadDate,
                         ParentFolderId = file.ParentFolderId,
+                        RootFolderId = Guid.Parse(await this.GetFileRootFolder(file.Id)),
                     }
                 );
             }
@@ -180,7 +181,7 @@ namespace BlazDrive.Services
         public async Task DeleteFile(Guid fileId)
         {
             // System.IO.File.Delete((await GetFilePath(fileId)).Aggregate((i, j) => i + j));
-            System.IO.File.Delete($"Storage/{GetFileRootFolder(fileId)}/{fileId}");
+            System.IO.File.Delete($"Storage/{await GetFileRootFolder(fileId)}/{fileId}");
             await _fileRepo.DeleteByIdAsync(fileId);
         }
 
@@ -224,11 +225,12 @@ namespace BlazDrive.Services
             Guid? tmp = (await _fileRepo.GetByIdAsync(fileId)).ParentFolderId;
             while (tmp is not null)
             {
-                tmp = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
-                if (tmp is not null)
+                var res = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
+                if (res is null)
                 {
                     rootFolderId = tmp.ToString();
-                }         
+                }
+                tmp = res;  
             }
             return rootFolderId;
         }

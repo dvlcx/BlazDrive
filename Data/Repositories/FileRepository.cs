@@ -32,9 +32,13 @@ namespace BlazDrive.Data.Repositories
             }
         }
 
-        public Task DeleteByIdAsync(Guid id)
+        public async Task DeleteByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            using (var context = _contextFactory.CreateDbContext())
+            {
+                context.Files.Remove(await context.Files.FirstOrDefaultAsync(f => f.Id == id));
+                await context.SaveChangesAsync();
+            }        
         }
 
         public Task<IEnumerable<Drive.File>> GetAllAsync()
@@ -50,9 +54,12 @@ namespace BlazDrive.Data.Repositories
             }
         }
 
-        public Task<Drive.File> GetByIdAsync(Guid id)
+        public async Task<Drive.File> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            using (var context  = _contextFactory.CreateDbContext())
+            {
+                return await context.Files.FirstOrDefaultAsync(x => x.Id == id);
+            }
         }
 
         public async Task UpdateAsync(Drive.File entity)

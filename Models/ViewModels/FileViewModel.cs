@@ -13,6 +13,8 @@ namespace BlazDrive.Models.ViewModels
         public float Size { get; set; }
         public DateTime UploadDate { get; set; }    
         public Guid ParentFolderId {get; set;}  
+        public Guid RootFolderId { get; set; }    
+        public string? Preview { get; set; }    
         public bool IsSelected { get; set; } = false;    
     }
 }
