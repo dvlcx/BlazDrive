@@ -46,5 +46,11 @@ namespace BlazDrive.Services
         {
             return (await _authStateProvider.GetAuthenticationStateAsync()).User.FindFirstValue("RootFolderId");
         }
+
+        public async Task<string> GetEncryptionKey()
+        {
+            var key =  (await _authStateProvider.GetAuthenticationStateAsync()).User.FindFirstValue("EncryptionKey");
+            return _cache.Get(Guid.Parse(key))?.ToString();
+        }
     }
 }

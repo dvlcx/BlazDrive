@@ -12,20 +12,21 @@ namespace BlazDrive.Services
     {
         private FolderRepository _folderRepo;
         private FileRepository _fileRepo;
+        private FileEncryptionService _fileEncryption;
 
         public BlazDriveViewModel BlazDriveViewModel { get; set; } = new BlazDriveViewModel();
         public List<Folder> FoldersToRemove { get; set; } = [];
 
 
-        public BlazDriveStorageService(IDbContextFactory<AppDbContext> contextFactory)
+        public BlazDriveStorageService(IDbContextFactory<AppDbContext> contextFactory, FileEncryptionService fileEncryptionService)
         {
             _folderRepo = new FolderRepository(contextFactory);
             _fileRepo = new FileRepository(contextFactory);
+            _fileEncryption = fileEncryptionService;
         }
 
         public async Task RefreshFullAsync(Guid folderId)
         {
-            BlazDriveViewModel = new BlazDriveViewModel();
             var folder = await _folderRepo.GetByIdAsync(folderId);
             var files = await _fileRepo.GetByFolderId(folderId);
 
@@ -39,6 +40,12 @@ namespace BlazDrive.Services
             });
 
             await this.RefreshAsync(folder.Id);
+
+            foreach (var file in BlazDriveViewModel.Files.Where(f => f.Type is FileType.Image))
+            {
+                byte[] imageArray = await _fileEncryption.DecryptFile(System.IO.File.ReadAllBytes($"Storage/{file.RootFolderId}/{file.Id}"));
+                file.Preview = Convert.ToBase64String(imageArray);
+            }
         }
 
         private async Task RefreshAsync(Guid folderId)
@@ -145,13 +152,20 @@ namespace BlazDrive.Services
 
         public async Task UploadFile(IReadOnlyList<IBrowserFile> files, string rootId, Guid parentFolderId)
         {
-
-                foreach (var file in files)
+            foreach (var file in files)
+            {
+                using (var ms = new MemoryStream())
                 {
+                    await file.OpenReadStream().CopyToAsync(ms);
+                    var fileBytes = ms.ToArray();
+                    var encrypted = await _fileEncryption.EncryptFile(fileBytes);
+                    
+                
                     var id = Guid.NewGuid();
-                    using (var fs = new FileStream($"Storage/{rootId}/{id}", FileMode.Create))
+                    using (var bw = new BinaryWriter(System.IO.File.Open($"Storage/{rootId}/{id}", FileMode.Create)))
                     {
-                        await file.OpenReadStream().CopyToAsync(fs);
+                        bw.Write(encrypted);
+                        // await file.OpenReadStream().CopyToAsync(fs);
                         FileType type = 
                         file.Name.Split('.').Last() switch 
                         {
@@ -173,6 +187,7 @@ namespace BlazDrive.Services
                         ));
                     }
                 }
+            }
         }
 
         public async Task DeleteFile(Guid fileId)

@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Caching.Memory;
+using SimpleCrypto;
+
 namespace BlazDrive.Services
 {
     public class AccountMainService
@@ -42,6 +44,17 @@ namespace BlazDrive.Services
             Convert.ToBase64String(System.IO.File.ReadAllBytes("wwwroot/Images/default_avatar.png")) :
             Convert.ToBase64String(account.Avatar));
 
+            PBKDF2 crypt = new()
+            {
+                PlainText = account.Password,
+                Salt = account.Id.ToString(),
+            };
+            Guid cryptKey = Guid.NewGuid();
+            var key = new string(crypt.Compute().Take(43).ToArray()) + "=";
+            var iv = new string(crypt.Compute().Skip(30).Take(22).ToArray()) + "==";
+            var c = $"<?xml version=\"1.0\" encoding=\"utf-16\"?>\n<AesKeyValue xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n  <key>{key}</key>\n  <iv>{iv}</iv>\n</AesKeyValue>";
+
+            _cache.Set(cryptKey, c);
 
             var claims = new List<Claim>
             {
@@ -50,6 +63,7 @@ namespace BlazDrive.Services
                 new Claim(ClaimTypes.Email, account.Email),
                 new Claim("AvatarKey", avatarKey.ToString()),
                 new Claim("RootFolderId", account.RootFolderId.ToString()),
+                new Claim("EncryptionKey", cryptKey.ToString())
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

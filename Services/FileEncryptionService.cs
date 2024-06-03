@@ -4,16 +4,27 @@ namespace BlazDrive.Services
 {
     public class FileEncryptionService
     {
-        public byte[] EncryptFile(byte[] file)
+        private AccountInfoService _accountInfo;
+        public FileEncryptionService(AccountInfoService accountInfoService)
         {
-            ICryptoNet encryptClient = new CryptoNetAes("sex");
+            _accountInfo = accountInfoService;
+        }
+
+        public async Task<byte[]> EncryptFile(byte[] file)
+        {   
+            // ICryptoNet cryptoNet = new CryptoNetAes();
+            // var key = cryptoNet.ExportKey();
+            var key = await _accountInfo.GetEncryptionKey();
+            CryptoNetAes encryptClient = new CryptoNetAes(key);
+            encryptClient.ExportKey();
             var encrypt = encryptClient.EncryptFromBytes(file);
             return encrypt;
         }
 
-        public byte[] DecryptFile(byte[] file)
+        public async Task<byte[]> DecryptFile(byte[] file)
         {
-            ICryptoNet decryptClient = new CryptoNetAes("sex");
+            var key = await _accountInfo.GetEncryptionKey();
+            ICryptoNet decryptClient = new CryptoNetAes(key);
             var decrypt = decryptClient.DecryptToBytes(file);
             return decrypt;
         }

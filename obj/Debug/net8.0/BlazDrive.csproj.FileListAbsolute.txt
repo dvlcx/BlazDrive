@@ -106,3 +106,4 @@
 /home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/FoolProof.Core.dll
 /home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Newtonsoft.Json.dll
 /home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/CryptoNet.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/SimpleCrypto.dll

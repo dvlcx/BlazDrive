@@ -33,7 +33,7 @@
                         </svg>
                         Upload
                     </label>
-                        <InputFile id="fileUpload" OnChange="@LoadFiles"  accept=".jpg,.jpeg,.png" hidden/>
+                        <InputFile id="fileUpload" OnChange="@LoadFiles" hidden/>
                     <button type="button" class="btn btn-secondary icon-btn me-2" disabled="">
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M6.3414 6.15897C7.16507 3.73597 9.38755 2 12 2C15.3137 2 18 4.79305 18 8.23846C20.2091 8.23846 22 10.1005 22 12.3974C22 13.9368 21.1956 15.2809 20 16M6.32069 6.20644C3.8806 6.55106 2 8.72597 2 11.3576C2 13.0582 2.7854 14.5682 3.99965 15.5167" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -195,11 +195,6 @@
     {
         await _blazDriveService.RefreshFullAsync(Guid.Parse(await _accountInfoService.GetRootFolderId()));
         _storage = _blazDriveService.BlazDriveViewModel;
-        foreach (var file in _storage.Files.Where(f => f.Type is FileType.Image))
-        {
-            byte[] imageArray = System.IO.File.ReadAllBytes($"Storage/{file.RootFolderId}/{file.Id}");
-            file.Preview = Convert.ToBase64String(imageArray);
-        }
     }
 
     private async Task CreateFolderClick(string name)

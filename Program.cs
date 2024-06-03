@@ -1,5 +1,6 @@
 using BlazDrive.Data;
 using BlazDrive.Services;
+using BlazDrive.Components;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +32,7 @@ public class Program
         builder.Services.AddSingleton<AccountMainService>();
         builder.Services.AddTransient<AccountInfoService>();
         builder.Services.AddSingleton<AccountEditService>();
-        builder.Services.AddSingleton<BlazDriveStorageService>();
+        builder.Services.AddScoped<BlazDriveStorageService>();
         builder.Services.AddTransient<FileEncryptionService>();
 
 
