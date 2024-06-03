@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BlazDrive.Data;
 using BlazDrive.Data.Repositories;
 using BlazDrive.Models;
@@ -111,6 +107,7 @@ namespace BlazDrive.Services
 
             foreach (var file in files)
             {
+                System.IO.File.Delete($"Storage/{await GetFileRootFolder(file.Id)}/{file.Id}");
                 _fileRepo.Delete(file);
             }
             

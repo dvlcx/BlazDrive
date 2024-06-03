@@ -1,20 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BlazDrive.Components.Pages;
 using BlazDrive.Data;
 using BlazDrive.Data.Repositories;
 using BlazDrive.Models.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using BCrypt.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Caching.Memory;
-using System.Drawing;
-using System.Data.SqlTypes;
 namespace BlazDrive.Services
 {
     public class AccountMainService

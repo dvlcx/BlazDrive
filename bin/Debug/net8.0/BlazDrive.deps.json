@@ -9,6 +9,7 @@
       "BlazDrive/1.0.0": {
         "dependencies": {
           "BCrypt.Net-Next": "4.0.3",
+          "CryptoNet": "2.4.0",
           "FoolProof.Core": "1.2.1",
           "Microsoft.EntityFrameworkCore": "8.0.4",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.4",
@@ -23,6 +24,14 @@
           "lib/net6.0/BCrypt.Net-Next.dll": {
             "assemblyVersion": "4.0.3.0",
             "fileVersion": "4.0.3.0"
+          }
+        }
+      },
+      "CryptoNet/2.4.0": {
+        "runtime": {
+          "lib/netstandard2.0/CryptoNet.dll": {
+            "assemblyVersion": "2.4.0.0",
+            "fileVersion": "2.4.0.0"
           }
         }
       },
@@ -533,6 +542,13 @@
       "sha512": "sha512-W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA==",
       "path": "bcrypt.net-next/4.0.3",
       "hashPath": "bcrypt.net-next.4.0.3.nupkg.sha512"
+    },
+    "CryptoNet/2.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0sQUcJMsSvG4eyUiayqXR083GC3dCzWrhEyK89UB9gnVcktJi+yp35QpRVg/xgHVWvWaMxeSwPb4H/XNmImlEw==",
+      "path": "cryptonet/2.4.0",
+      "hashPath": "cryptonet.2.4.0.nupkg.sha512"
     },
     "FoolProof.Core/1.2.1": {
       "type": "package",

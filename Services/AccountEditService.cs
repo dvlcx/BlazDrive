@@ -1,13 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using BCrypt.Net;
 using BlazDrive.Data;
 using BlazDrive.Data.Repositories;
-using BlazDrive.Models.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;

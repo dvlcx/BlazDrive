@@ -15,6 +15,22 @@
           }
         }
       },
+      "CryptoNet/2.4.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/CryptoNet.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/CryptoNet.dll": {}
+        },
+        "contentFiles": {
+          "contentFiles/any/netstandard2.0/CryptoNetLogo-icon.ico": {
+            "buildAction": "Content",
+            "codeLanguage": "any",
+            "copyToOutput": false
+          }
+        }
+      },
       "FoolProof.Core/1.2.1": {
         "type": "package",
         "dependencies": {
@@ -670,6 +686,15 @@
           }
         }
       },
+      "SimpleCrypto/0.3.30.26": {
+        "type": "package",
+        "compile": {
+          "lib/SimpleCrypto.dll": {}
+        },
+        "runtime": {
+          "lib/SimpleCrypto.dll": {}
+        }
+      },
       "System.CodeDom/4.4.0": {
         "type": "package",
         "compile": {
@@ -969,6 +994,23 @@
         "lib/netstandard2.1/BCrypt.Net-Next.dll",
         "lib/netstandard2.1/BCrypt.Net-Next.xml",
         "readme.md"
+      ]
+    },
+    "CryptoNet/2.4.0": {
+      "sha512": "0sQUcJMsSvG4eyUiayqXR083GC3dCzWrhEyK89UB9gnVcktJi+yp35QpRVg/xgHVWvWaMxeSwPb4H/XNmImlEw==",
+      "type": "package",
+      "path": "cryptonet/2.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CryptoNetLogo-icon.png",
+        "LICENSE",
+        "README.md",
+        "content/CryptoNetLogo-icon.ico",
+        "contentFiles/any/netstandard2.0/CryptoNetLogo-icon.ico",
+        "cryptonet.2.4.0.nupkg.sha512",
+        "cryptonet.nuspec",
+        "lib/netstandard2.0/CryptoNet.dll"
       ]
     },
     "FoolProof.Core/1.2.1": {
@@ -2038,6 +2080,18 @@
         "pomelo.entityframeworkcore.mysql.nuspec"
       ]
     },
+    "SimpleCrypto/0.3.30.26": {
+      "sha512": "MiKxbgtfyZL9IXI4crb3+sLbjf8uUiVCcc1YvfajlIFlWiCbW+SejXZ2wlp/V9CGcLsYEVft7QvcncooWBAchQ==",
+      "type": "package",
+      "path": "simplecrypto/0.3.30.26",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/SimpleCrypto.dll",
+        "simplecrypto.0.3.30.26.nupkg.sha512",
+        "simplecrypto.nuspec"
+      ]
+    },
     "System.CodeDom/4.4.0": {
       "sha512": "2sCCb7doXEwtYAbqzbF/8UAeDRMNmPaQbU2q50Psg1J9KzumyVVCgKQY8s53WIPTufNT0DpSe9QRvVjOzfDWBA==",
       "type": "package",
@@ -2465,10 +2519,12 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "BCrypt.Net-Next >= 4.0.3",
+      "CryptoNet >= 2.4.0",
       "FoolProof.Core >= 1.2.1",
       "Microsoft.EntityFrameworkCore >= 8.0.4",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.4",
-      "Pomelo.EntityFrameworkCore.MySql >= 8.0.2"
+      "Pomelo.EntityFrameworkCore.MySql >= 8.0.2",
+      "SimpleCrypto >= 0.3.30.26"
     ]
   },
   "packageFolders": {
@@ -2517,6 +2573,10 @@
             "target": "Package",
             "version": "[4.0.3, )"
           },
+          "CryptoNet": {
+            "target": "Package",
+            "version": "[2.4.0, )"
+          },
           "FoolProof.Core": {
             "target": "Package",
             "version": "[1.2.1, )"
@@ -2532,6 +2592,10 @@
           "Pomelo.EntityFrameworkCore.MySql": {
             "target": "Package",
             "version": "[8.0.2, )"
+          },
+          "SimpleCrypto": {
+            "target": "Package",
+            "version": "[0.3.30.26, )"
           }
         },
         "imports": [
@@ -2556,5 +2620,17 @@
         "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'SimpleCrypto 0.3.30.26' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "libraryId": "SimpleCrypto",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }
