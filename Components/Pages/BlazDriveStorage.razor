@@ -12,13 +12,14 @@
     <div class="container flex-grow-1 light-style container-p-y">
         <div class="container-m-nx container-m-ny bg-lightest mb-3">
             <ol class="breadcrumb text-big container-p-x py-3 m-0">
-                <li class="breadcrumb-item">
-                    <a href="javascript:void(0)">home</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="javascript:void(0)">projects</a>
-                </li>
-                <li class="breadcrumb-item active">site</li>
+                @foreach (var f in _currentPath)
+                {
+                    <li class="breadcrumb-item">
+                        <a href="/blazdrive" @onclick="@(() => ChangeCurrentFolder(f))" style="text-decoration: $link-hover-decoration;">@f.Name</a>
+                    </li>
+                }
+
+                <li class="breadcrumb-item active">@_currentFolder.Name</li>
             </ol>
 
             <hr class="m-0" />
@@ -179,6 +180,7 @@
     private bool _showFolderNameField = false;
     private BlazDriveViewModel _storage;
     private FolderViewModel _currentFolder;
+    private List<FolderViewModel> _currentPath = [];
     private string _newFolderName;
 
     protected override async Task OnInitializedAsync()
@@ -232,10 +234,25 @@
     private void ChangeCurrentFolder(FolderViewModel folder)
     {
         _currentFolder = folder;
+        RefreshCurrentPath();
     }
 
     private void ShowNewFolderNameField()
     {
         _showFolderNameField = !_showFolderNameField;
     }
+    
+    private void RefreshCurrentPath()
+    {
+        var res = new List<FolderViewModel>();
+        var f = _storage.Folders.FirstOrDefault(x => x.Id == _currentFolder.ParentFolderId);
+        while (f is not null)
+        {
+            res.Add(f);
+            f = _storage.Folders.FirstOrDefault(x => x.Id == f.ParentFolderId);
+        }
+        res.Reverse();
+        _currentPath = res;
+    }
 }
+ 
