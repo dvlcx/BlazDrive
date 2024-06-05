@@ -27,6 +27,7 @@ namespace BlazDrive.Services
 
         public async Task RefreshFullAsync(Guid folderId)
         {
+            BlazDriveViewModel = new();
             var folder = await _folderRepo.GetByIdAsync(folderId);
             var files = await _fileRepo.GetByFolderId(folderId);
 
@@ -195,6 +196,60 @@ namespace BlazDrive.Services
             // System.IO.File.Delete((await GetFilePath(fileId)).Aggregate((i, j) => i + j));
             System.IO.File.Delete($"Storage/{await GetFileRootFolder(fileId)}/{fileId}");
             await _fileRepo.DeleteByIdAsync(fileId);
+        }
+
+        public async Task MoveFolder(Guid folderId, Guid destinationFolderId)
+        {
+            var folder  = await _folderRepo.GetByIdAsync(folderId);
+            folder.ParentFolderId = destinationFolderId;
+            await _folderRepo.UpdateAsync(folder);
+        }
+
+        public async Task CopyFolder(Guid folderId, Guid destinationFolderId)
+        {
+            var folder  = await _folderRepo.GetByIdAsync(folderId);
+            folder.ParentFolderId = destinationFolderId;
+            folder.Id = Guid.NewGuid();
+            folder.CreationDate = DateTime.Now;
+            await _folderRepo.AddAsync(folder);
+            await CopyFolderRecursive(folder.Id);
+        }
+
+        private async Task CopyFolderRecursive(Guid folderId)
+        {
+            var folders = await _folderRepo.GetByParentId(folderId);
+            var files = await _fileRepo.GetByFolderId(folderId);
+
+            foreach (var file in files)
+            {
+                file.ParentFolderId = folderId;
+                file.Id = Guid.NewGuid();
+                await _fileRepo.AddAsync(file);
+            }
+
+            foreach (var folder in folders)
+            {
+                folder.Id = Guid.NewGuid();
+                folder.ParentFolderId = folderId;
+                folder.CreationDate = DateTime.Now;
+                await _folderRepo.AddAsync(folder);
+                await CopyFolderRecursive(folder.Id);
+            }
+        }
+
+        public async Task MoveFile(Guid fileId, Guid destinationFolderId)
+        {
+            var file  = await _fileRepo.GetByIdAsync(fileId);
+            file.ParentFolderId = destinationFolderId;
+            await _fileRepo.UpdateAsync(file);
+        }
+
+        public async Task CopyFile(Guid fileId, Guid destinationFolderId)
+        {
+            var file  = await _fileRepo.GetByIdAsync(fileId);
+            file.ParentFolderId = destinationFolderId;
+            file.Id = Guid.NewGuid();
+            await _fileRepo.AddAsync(file);
         }
 
         private async Task<List<string>> GetFolderPath(Guid folderId)

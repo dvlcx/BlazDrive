@@ -4,11 +4,50 @@
 @inject AccountInfoService _accountInfoService
 @inject BlazDriveStorageService _blazDriveService
 @rendermode @(new InteractiveServerRenderMode(false))
+@using Blazorise.TreeView
+@using Blazorise
+
+<link href="_content/Blazorise.TreeView/blazorise.treeview.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<link href="_content/Blazorise.Icons.FontAwesome/v6/css/all.min.css" rel="stylesheet">
 
 <link rel="stylesheet" href="BlazDriveStorage.css?" />
 <NavBar />
 @if (_renderReady)
 {
+            <div class="modal" tabindex="-1" role="dialog" style="display:@_showFolderModal;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-heade text-centerr">
+                        <h5 class="modal-title">@_modalState</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Modal body text goes here.</p>
+                        <TreeView Nodes="_storage.Folders.Where(x => x.ParentFolderId is null)"
+                                GetChildNodes="@(item => _storage.Folders.Where(x => x.ParentFolderId == item.Id).Where(x => !x.IsSelected).ToList())"
+                                HasChildNodes="@(item => _storage.Folders.Where(x => x.ParentFolderId == item.Id).Any() == true)"
+                                @bind-SelectedNode="_destinationFolder"
+                                @bind-ExpandedNodes="_expandedNodes">
+                            <NodeContent>
+                                <Blazorise.Icon Name="IconName.Folder" />
+                                @context.Name
+                            </NodeContent>
+                        </TreeView>
+                    </div>
+                    <div class="modal-footer">
+                        @if (_modalState is ModalState.Copy && _destinationFolder is not null)
+                        {
+                            <button type="button" class="btn btn-primary" @onclick="@(() => CopySelected(_destinationFolder.Id))">@_modalState</button>
+                        }
+                        else if (_modalState is ModalState.Move && _destinationFolder is not null)
+                        {
+                            <button type="button" class="btn btn-primary" @onclick="@(() => MoveSelected(_destinationFolder.Id))">@_modalState</button>
+                        }
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="@HideFolderModal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     <div class="container flex-grow-1 light-style container-p-y">
         <div class="container-m-nx container-m-ny bg-lightest mb-3">
             <ol class="breadcrumb text-big container-p-x py-3 m-0">
@@ -33,7 +72,7 @@
                         </svg>
                         Upload
                     </label>
-                        <InputFile id="fileUpload" OnChange="@LoadFiles" hidden/>
+                        <InputFile id="fileUpload" OnChange="@LoadFiles" hidden multiple/>
                     <button type="button" class="btn btn-secondary icon-btn me-2" disabled="">
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M6.3414 6.15897C7.16507 3.73597 9.38755 2 12 2C15.3137 2 18 4.79305 18 8.23846C20.2091 8.23846 22 10.1005 22 12.3974C22 13.9368 21.1956 15.2809 20 16M6.32069 6.20644C3.8806 6.55106 2 8.72597 2 11.3576C2 13.0582 2.7854 14.5682 3.99965 15.5167" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -65,8 +104,8 @@
                         </svg>
                     </a>
                     <ul class="dropdown-menu  dropdown-menu-end">
-                        <li><a class="dropdown-item" >Cut</a></li>
-                        <li><a class="dropdown-item" >Copy</a></li>
+                        <li><a class="dropdown-item" @onclick="@ShowFolderModalMove" >Move</a></li>
+                        <li><a class="dropdown-item" @onclick="@ShowFolderModalCopy" >Copy</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" @onclick="@(async () => await DeleteRangeClick())">Delete</a></li>
                     </ul>
@@ -104,7 +143,7 @@
                     <ExplorerItem Name="@folder.Name" OnClickCallback="@(() => ChangeCurrentFolder(folder))">
                         @* onclick="@(() => ChangeCurrentFolder(folder))" *@
                         <CheckBox>
-                            <input type="checkbox" class="custom-control-input"  @bind-value="@folder.IsSelected">
+                            <input type="checkbox" class="custom-control-input" @bind="@folder.IsSelected" @onclick="@(() => folder.IsSelected = !folder.IsSelected)">
                         </CheckBox>    
                         <Preview>
                             <svg width="120px" height="120px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -178,8 +217,12 @@
 {
     private bool _renderReady = false;
     private bool _showFolderNameField = false;
+    private string _showFolderModal = "none;";
+    private ModalState? _modalState = null;
     private BlazDriveViewModel _storage;
     private FolderViewModel _currentFolder;
+    private FolderViewModel? _destinationFolder;
+    private IList<FolderViewModel> _expandedNodes = new List<FolderViewModel>();
     private List<FolderViewModel> _currentPath = [];
     private string _newFolderName;
 
@@ -226,8 +269,38 @@
         await Refresh();
     }
 
+    private async Task MoveSelected(Guid destinationFolderId)
+    {
+        foreach (var file in _storage.Files.Where(x => x.IsSelected))
+        {
+            await _blazDriveService.MoveFile(file.Id, destinationFolderId);
+        }
+        foreach (var folder in _storage.Folders.Where(x => x.IsSelected))
+        {
+            await _blazDriveService.MoveFolder(folder.Id, destinationFolderId);
+        }
+        await Refresh();
+    }
+
+    private async Task CopySelected(Guid destinationFolderId)
+    {
+        foreach (var file in _storage.Files.Where(x => x.IsSelected))
+        {
+            await _blazDriveService.CopyFile(file.Id, destinationFolderId);
+        }
+        foreach (var folder in _storage.Folders.Where(x => x.IsSelected))
+        {
+            await _blazDriveService.CopyFolder(folder.Id, destinationFolderId);
+        }
+        await Refresh();
+    }
+
     private void ChangeCurrentFolder(FolderViewModel folder)
     {
+        foreach (var f in _storage.Folders)
+            f.IsSelected = false;
+        foreach (var f in _storage.Files)
+            f.IsSelected = false;
         _currentFolder = folder;
         RefreshCurrentPath();
     }
@@ -237,6 +310,26 @@
         _showFolderNameField = !_showFolderNameField;
     }
     
+    private void HideFolderModal()
+    {
+        _showFolderModal = "none;";
+        _modalState = null;
+    }
+
+    private void ShowFolderModalMove()
+    {
+        if (!_storage.Files.Any(x => x.IsSelected) && !_storage.Folders.Any(x => x.IsSelected)) return;
+        _modalState = ModalState.Move;
+        _showFolderModal = "block;";
+    }
+
+    private void ShowFolderModalCopy()
+    {
+        if (!_storage.Files.Any(x => x.IsSelected) && !_storage.Folders.Any(x => x.IsSelected)) return;
+        _modalState = ModalState.Copy;
+        _showFolderModal = "block;";
+    }
+
     private void RefreshCurrentPath()
     {
         var res = new List<FolderViewModel>();
@@ -249,5 +342,5 @@
         res.Reverse();
         _currentPath = res;
     }
+
 }
- 

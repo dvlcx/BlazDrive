@@ -47,6 +47,18 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "Blazorise.Bootstrap5": {
+              "target": "Package",
+              "version": "[1.5.3, )"
+            },
+            "Blazorise.Icons.FontAwesome": {
+              "target": "Package",
+              "version": "[1.5.3, )"
+            },
+            "Blazorise.TreeView": {
+              "target": "Package",
+              "version": "[1.5.3, )"
+            },
             "CryptoNet": {
               "target": "Package",
               "version": "[2.4.0, )"

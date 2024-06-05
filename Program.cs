@@ -3,6 +3,9 @@ using BlazDrive.Services;
 using BlazDrive.Components;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Blazorise;
+using Blazorise.Bootstrap5;
+using Blazorise.Icons.FontAwesome;
 
 namespace BlazDrive;
 
@@ -34,6 +37,13 @@ public class Program
         builder.Services.AddSingleton<AccountEditService>();
         builder.Services.AddScoped<BlazDriveStorageService>();
         builder.Services.AddTransient<FileEncryptionService>();
+        builder.Services
+    .AddBlazorise( options =>
+    {
+        options.Immediate = true;
+    } )
+    .AddBootstrap5Providers()
+    .AddFontAwesomeIcons();
 
 
         var app = builder.Build();

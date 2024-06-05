@@ -107,3 +107,17 @@
 /home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Newtonsoft.Json.dll
 /home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/CryptoNet.dll
 /home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/SimpleCrypto.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Blazorise.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Blazorise.Bootstrap5.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Blazorise.Licensing.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Microsoft.AspNetCore.Authorization.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Microsoft.AspNetCore.Components.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Microsoft.AspNetCore.Components.Forms.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Microsoft.AspNetCore.Components.Web.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Microsoft.AspNetCore.Metadata.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Microsoft.JSInterop.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Blazorise.TreeView.dll
+/home/dvlcx/Projects/BlazDrive/bin/Debug/net8.0/Blazorise.Icons.FontAwesome.dll
