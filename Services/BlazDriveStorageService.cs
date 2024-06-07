@@ -1,10 +1,14 @@
+using System.IO.Compression;
 using BlazDrive.Data;
 using BlazDrive.Data.Repositories;
 using BlazDrive.Models;
 using BlazDrive.Models.Entities;
+using BlazDrive.Models.OutputModels;
 using BlazDrive.Models.ViewModels;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BlazDrive.Services
 {
@@ -13,16 +17,18 @@ namespace BlazDrive.Services
         private FolderRepository _folderRepo;
         private FileRepository _fileRepo;
         private FileEncryptionService _fileEncryption;
+        private IMemoryCache _cache;
 
         public BlazDriveViewModel BlazDriveViewModel { get; set; } = new BlazDriveViewModel();
         public List<Folder> FoldersToRemove { get; set; } = [];
 
 
-        public BlazDriveStorageService(IDbContextFactory<AppDbContext> contextFactory, FileEncryptionService fileEncryptionService)
+        public BlazDriveStorageService(IDbContextFactory<AppDbContext> contextFactory, FileEncryptionService fileEncryptionService, IMemoryCache cache)
         {
             _folderRepo = new FolderRepository(contextFactory);
             _fileRepo = new FileRepository(contextFactory);
             _fileEncryption = fileEncryptionService;
+            _cache = cache;
         }
 
         public async Task RefreshFullAsync(Guid folderId)
@@ -53,7 +59,6 @@ namespace BlazDrive.Services
         {
             var folders = await _folderRepo.GetByParentId(folderId);
             var files = await _fileRepo.GetByFolderId(folderId);
-
             foreach (var file in files)
             {
                 BlazDriveViewModel.Files.Add(
@@ -78,6 +83,7 @@ namespace BlazDrive.Services
                     Name = folder.Name,
                     ParentFolderId = folder.ParentFolderId,
                     CreationDate = folder.CreationDate,
+                    RootFolderId = Guid.Parse(await this.GetFolderRootFolder(folder.Id)),
                 });
                 await RefreshAsync(folder.Id);
             }
@@ -252,6 +258,91 @@ namespace BlazDrive.Services
             await _fileRepo.AddAsync(file);
         }
 
+        public async Task RenameFile(Guid fileId, string newName)
+        {
+            var f = await _fileRepo.GetByIdAsync(fileId);
+            f.Name = newName;
+            await _fileRepo.UpdateAsync(f);
+        }
+        
+        public async Task RenameFolder(Guid folderId, string newName)
+        {
+            var f = await _folderRepo.GetByIdAsync(folderId);
+            f.Name = newName;
+            await _folderRepo.UpdateAsync(f);
+        }
+
+        public async Task<Guid> PrepareDownloadFile(Guid fileId, Guid rootFolderId, string fileName, Guid userId)
+        {
+            byte[] fileArr = await _fileEncryption.DecryptFile(System.IO.File.ReadAllBytes($"Storage/{rootFolderId}/{fileId}"));
+
+            var fileModel = new OutputFile()
+            {
+                FileName = fileName,
+                File = fileArr,
+                UserId = userId,
+            };
+
+            var key = Guid.NewGuid();
+            _cache.Set(key, fileModel);
+
+            return key;
+        }
+
+        public async Task<Guid> PrepareDownloadFolder(Guid rootFolderId, Guid folderId, string folderName,  Guid userId)
+        {
+            using (var compressedFileStream = new MemoryStream())   
+            {
+                using (ZipArchive zip = new ZipArchive(compressedFileStream, ZipArchiveMode.Create, false))
+                {
+                    foreach (var file in await _fileRepo.GetByFolderId(folderId))
+                    {
+                        var zipEntry = zip.CreateEntry(file.Name);
+                        byte[] fileArr = await _fileEncryption.DecryptFile(System.IO.File.ReadAllBytes($"Storage/{rootFolderId}/{file.Id}"));
+                        using (var originalFileStream = new MemoryStream(fileArr))
+                        using (var zipEntryStream = zipEntry.Open()) {
+                            originalFileStream.CopyTo(zipEntryStream);
+                        }
+                    }
+
+                    foreach (var folder in await _folderRepo.GetByParentId(folderId))
+                    {
+                        await PrepareDownloadFolderRecursive(rootFolderId, zip, folder.Id);
+                    }
+                }
+                var fileModel = new OutputFile()
+                {
+                    FileName = folderName + ".zip",
+                    File = compressedFileStream.ToArray(),
+                    UserId = userId,
+                };
+                    var key = Guid.NewGuid();
+                _cache.Set(key, fileModel);
+
+                return key;
+            }
+        }
+
+        private async Task PrepareDownloadFolderRecursive(Guid rootFolderId, ZipArchive zip, Guid folderId)
+        {
+            var folders = await _folderRepo.GetByParentId(folderId);
+            var files = await _fileRepo.GetByFolderId(folderId);
+
+            foreach (var file in files)
+            {
+                var zipEntry = zip.CreateEntry((await this.GetFilePath(file)).Skip(1).Aggregate((i, j) => i + j) + file.Name);
+                byte[] fileArr = await _fileEncryption.DecryptFile(System.IO.File.ReadAllBytes($"Storage/{rootFolderId}/{file.Id}"));
+                using (var originalFileStream = new MemoryStream(fileArr))
+                    using (var zipEntryStream = zipEntry.Open())
+                        originalFileStream.CopyTo(zipEntryStream);
+            }
+
+            foreach (var folder in folders)
+            {
+                await PrepareDownloadFolderRecursive(rootFolderId, zip, folder.Id);
+            }
+        }
+
         private async Task<List<string>> GetFolderPath(Guid folderId)
         {
             List<string> path = [$"{folderId}"];
@@ -269,19 +360,19 @@ namespace BlazDrive.Services
             return path;
         }
 
-        private async Task<List<string>> GetFilePath(Guid fileId)
+        private async Task<List<string>> GetFilePath(Models.Entities.File file)
         {
-            List<string> path = [$"{fileId}"];
-            Guid? tmp = (await _fileRepo.GetByIdAsync(fileId)).ParentFolderId;
+            List<string> path = [];
+            Guid? tmp = file.ParentFolderId;
             while (tmp is not null)
             {
-                tmp = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
+                var folder = await _folderRepo.GetByIdAsync((Guid)tmp);
+                tmp = folder?.ParentFolderId;
                 if (tmp is not null)
                 {
-                    path.Add($"{tmp}/");
+                    path.Add($"{folder.Name}/");
                 }         
             }
-            path.Add("Storage/");
             path.Reverse();
             return path;
         }
@@ -290,6 +381,22 @@ namespace BlazDrive.Services
         {
             string rootFolderId = string.Empty;
             Guid? tmp = (await _fileRepo.GetByIdAsync(fileId)).ParentFolderId;
+            while (tmp is not null)
+            {
+                var res = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
+                if (res is null)
+                {
+                    rootFolderId = tmp.ToString();
+                }
+                tmp = res;  
+            }
+            return rootFolderId;
+        }
+
+        private async Task<string> GetFolderRootFolder(Guid folderId)
+        {
+            string rootFolderId = folderId.ToString();
+            Guid? tmp = (await _folderRepo.GetByIdAsync(folderId)).ParentFolderId;
             while (tmp is not null)
             {
                 var res = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;

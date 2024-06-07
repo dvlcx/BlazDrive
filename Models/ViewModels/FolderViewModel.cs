@@ -6,7 +6,8 @@ namespace BlazDrive.Models.ViewModels
         public string Name { get; set;}
         public Guid? ParentFolderId { get; set; }  
         public DateTime CreationDate { get; set; }
-        public string ViewPath{ get; set; }
+        public Guid RootFolderId { get; set; }    
+
         public bool IsSelected { get; set; } = false;    
     }
 }

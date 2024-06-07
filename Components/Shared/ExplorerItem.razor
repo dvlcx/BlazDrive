@@ -10,16 +10,17 @@
     <a class="file-item-name" @onclick="OnClickCallback">
         @Name
     </a>
-    @* <div class="file-item-changed">02/20/2018</div> *@
-    <div class="file-item-actions btn-group">
-        <button type="button" class="btn btn-default btn-sm rounded-pill icon-btn borderless md-btn-flat hide-arrow dropdown-toggle" data-toggle="dropdown"><i class="ion ion-ios-more"></i></button>
-        <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="javascript:void(0)">Rename</a>
-            <a class="dropdown-item" href="javascript:void(0)">Move</a>
-            <a class="dropdown-item" href="javascript:void(0)">Copy</a>
-            <a class="dropdown-item" href="javascript:void(0)">Remove</a>
-        </div>
-    </div>
+    <button class=" file-item-actions btn-group nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+    </button>
+    <ul class="dropdown-menu  dropdown-menu-right" >
+        <li><a class="dropdown-item" @onclick="DownloadCallback">Download</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" @onclick="RenameCallback">Rename</a></li>
+        <li><a class="dropdown-item" @onclick="MoveCallback">Move</a></li>
+        <li><a class="dropdown-item" @onclick="CopyCallback">Copy</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" @onclick="DeleteCallback">Delete</a></li>
+    </ul>
 </div>
 
 @code
@@ -34,4 +35,14 @@
     public string Name { get; set; }
     [Parameter]
     public EventCallback OnClickCallback { get; set; }
+    [Parameter]
+    public EventCallback DownloadCallback { get; set; }
+    [Parameter]
+    public EventCallback RenameCallback { get; set; }
+    [Parameter]
+    public EventCallback MoveCallback { get; set; }
+    [Parameter]
+    public EventCallback CopyCallback { get; set; }
+    [Parameter]
+    public EventCallback DeleteCallback { get; set; }
 }

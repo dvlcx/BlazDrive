@@ -1,5 +1,5 @@
 ﻿@page "/settings"
-@layout MainLayout
+@layout EmptyLayout
 @rendermode @(new InteractiveServerRenderMode(false))
 
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
@@ -11,6 +11,7 @@
 
 <PageTitle>Settings</PageTitle>
 
+<NavBar/>
 <EditForm Model="_userEditInput" OnValidSubmit="SaveChangesClick">
 <div class="container">
    <div class="row justify-content-center">
@@ -92,8 +93,11 @@
    protected override async Task OnInitializedAsync()
    {
       var state = await _authStateProvider.GetAuthenticationStateAsync();
-      if(!state.User.Identity.IsAuthenticated) return;
-      
+      if(state.User.Identity is null || !state.User.Identity.IsAuthenticated) 
+      {
+         _navigationManager.NavigateTo("/settings", true);
+         return;
+      }
       _avatar = await _accountInfoService.GetAvatar();
       _id = (await _accountInfoService.GetGuid()).ToString();
       

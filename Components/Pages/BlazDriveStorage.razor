@@ -3,6 +3,7 @@
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 @inject AccountInfoService _accountInfoService
 @inject BlazDriveStorageService _blazDriveService
+@inject NavigationManager _navigation
 @rendermode @(new InteractiveServerRenderMode(false))
 @using Blazorise.TreeView
 @using Blazorise
@@ -140,7 +141,7 @@
 
                 @foreach(var folder in _storage.Folders.Where(x => x.ParentFolderId == _currentFolder.Id))
                 {
-                    <ExplorerItem Name="@folder.Name" OnClickCallback="@(() => ChangeCurrentFolder(folder))">
+                    <ExplorerItem Name="@folder.Name" OnClickCallback="@(() => ChangeCurrentFolder(folder))" DownloadCallback="@(() => DownloadFolderClick(folder))">
                         @* onclick="@(() => ChangeCurrentFolder(folder))" *@
                         <CheckBox>
                             <input type="checkbox" class="custom-control-input" @bind="@folder.IsSelected" @onclick="@(() => folder.IsSelected = !folder.IsSelected)">
@@ -158,10 +159,10 @@
 
                 @foreach(var file in _storage.Files.Where(x => x.ParentFolderId == _currentFolder.Id))
                 {
-                    <ExplorerItem Name="@file.Name">
+                    <ExplorerItem Name="@file.Name" DownloadCallback="@(() => DownloadFileClick(file))">
                         @* onclick="@(() => ChangeCurrentFolder(folder))" *@
                         <CheckBox>
-                            <input type="checkbox" class="custom-control-input"  @bind-value="@file.IsSelected">
+                            <input type="checkbox" class="custom-control-input"  @bind="@file.IsSelected" @onclick="@(() => file.IsSelected = !file.IsSelected)">
                         </CheckBox>    
                         <Preview>
                             @switch (file.Type)
@@ -236,6 +237,8 @@
 
     private async Task Refresh()
     {
+        if(await _accountInfoService.GetRootFolderId() is null)
+            _navigation.NavigateTo("/blazdrive", true);
         await _blazDriveService.RefreshFullAsync(Guid.Parse(await _accountInfoService.GetRootFolderId()));
         _storage = _blazDriveService.BlazDriveViewModel;
     }
@@ -293,6 +296,20 @@
             await _blazDriveService.CopyFolder(folder.Id, destinationFolderId);
         }
         await Refresh();
+    }
+
+    private async Task DownloadFileClick(FileViewModel file)
+    {
+        var key = await _blazDriveService.PrepareDownloadFile(file.Id, file.RootFolderId, file.Name, await _accountInfoService.GetGuid());
+        _navigation.NavigateTo($"download/file/{key}");
+        
+    }
+
+    private async Task DownloadFolderClick(FolderViewModel folder)
+    {
+        var key = await _blazDriveService.PrepareDownloadFolder(folder.RootFolderId, folder.Id, folder.Name, await _accountInfoService.GetGuid());
+        _navigation.NavigateTo($"download/file/{key}");
+        
     }
 
     private void ChangeCurrentFolder(FolderViewModel folder)

@@ -15,6 +15,13 @@ namespace BlazDrive.Services
             _cache = memoryCache;
         }
 
+        public async Task<bool> IsAuthenticated()
+        {
+            var state = await _authStateProvider.GetAuthenticationStateAsync();
+            if(state.User.Identity.IsAuthenticated) return true;
+            return false;
+        }
+
         public async Task<Guid> GetGuid()
         {
             return Guid.Parse((await _authStateProvider.GetAuthenticationStateAsync()).User.FindFirstValue("Id"));

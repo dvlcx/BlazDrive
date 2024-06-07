@@ -33,7 +33,7 @@ public class Program
             options.UseMySql(builder.Configuration.GetConnectionString("BlazDriveConnectionString"),
                 new MySqlServerVersion("11.2.3-MariaDB")));
         builder.Services.AddSingleton<AccountMainService>();
-        builder.Services.AddTransient<AccountInfoService>();
+        builder.Services.AddScoped<AccountInfoService>();
         builder.Services.AddSingleton<AccountEditService>();
         builder.Services.AddScoped<BlazDriveStorageService>();
         builder.Services.AddTransient<FileEncryptionService>();
