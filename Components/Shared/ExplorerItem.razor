@@ -14,6 +14,7 @@
     </button>
     <ul class="dropdown-menu  dropdown-menu-right" >
         <li><a class="dropdown-item" @onclick="DownloadCallback">Download</a></li>
+        <li><a class="dropdown-item" @onclick="CreateLinkCallback">Create Link</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" @onclick="RenameCallback">Rename</a></li>
         <li><a class="dropdown-item" @onclick="MoveCallback">Move</a></li>
@@ -37,6 +38,8 @@
     public EventCallback OnClickCallback { get; set; }
     [Parameter]
     public EventCallback DownloadCallback { get; set; }
+    [Parameter]
+    public EventCallback CreateLinkCallback { get; set; }
     [Parameter]
     public EventCallback RenameCallback { get; set; }
     [Parameter]

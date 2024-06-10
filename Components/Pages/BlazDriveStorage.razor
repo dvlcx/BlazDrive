@@ -49,6 +49,32 @@
                 </div>
             </div>
         </div>
+
+<div class="modal" tabindex="-1" role="dialog" style="display:@_showLinkModal;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-heade text-centerr">
+                        <h5 class="modal-title">Create link for your @_modalStateLink</h5>
+                    </div>
+                    <div class="modal-body">
+                       <InputText @bind-Value="@_linkPassword"/>
+                        <InputDate Type="InputDateType.DateTimeLocal" min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="@_expireTime" />
+                    </div>
+                    <div class="modal-footer">
+                        @if (_modalStateLink is ModalStateLink.File)
+                        {
+                            <button type="button" class="btn btn-primary" @onclick="@(() => CreateLinkFileClick(_fileForLink, _expireTime, _linkPassword))">Create Link</button>
+                        }
+                        else if (_modalStateLink is ModalStateLink.Folder)
+                        {
+                            <button type="button" class="btn btn-primary" @onclick="@(() => CreateLinkFolderClick(_folderForLink, _expireTime, _linkPassword))">Create Link</button>
+                        }
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="@HideLinkModal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     <div class="container flex-grow-1 light-style container-p-y">
         <div class="container-m-nx container-m-ny bg-lightest mb-3">
             <ol class="breadcrumb text-big container-p-x py-3 m-0">
@@ -141,7 +167,7 @@
 
                 @foreach(var folder in _storage.Folders.Where(x => x.ParentFolderId == _currentFolder.Id))
                 {
-                    <ExplorerItem Name="@folder.Name" OnClickCallback="@(() => ChangeCurrentFolder(folder))" DownloadCallback="@(() => DownloadFolderClick(folder))">
+                    <ExplorerItem Name="@folder.Name" OnClickCallback="@(() => ChangeCurrentFolder(folder))" DownloadCallback="@(() => DownloadFolderClick(folder))" CreateLinkCallback="@(() => ShowLinkModalFolder(folder))">
                         @* onclick="@(() => ChangeCurrentFolder(folder))" *@
                         <CheckBox>
                             <input type="checkbox" class="custom-control-input" @bind="@folder.IsSelected" @onclick="@(() => folder.IsSelected = !folder.IsSelected)">
@@ -159,7 +185,7 @@
 
                 @foreach(var file in _storage.Files.Where(x => x.ParentFolderId == _currentFolder.Id))
                 {
-                    <ExplorerItem Name="@file.Name" DownloadCallback="@(() => DownloadFileClick(file))">
+                    <ExplorerItem Name="@file.Name" DownloadCallback="@(() => DownloadFileClick(file))" CreateLinkCallback="@(() => ShowLinkModalFile(file))">
                         @* onclick="@(() => ChangeCurrentFolder(folder))" *@
                         <CheckBox>
                             <input type="checkbox" class="custom-control-input"  @bind="@file.IsSelected" @onclick="@(() => file.IsSelected = !file.IsSelected)">
@@ -219,13 +245,21 @@
     private bool _renderReady = false;
     private bool _showFolderNameField = false;
     private string _showFolderModal = "none;";
+    private string _showLinkModal = "none;";
     private ModalState? _modalState = null;
+    private ModalStateLink? _modalStateLink = null;
+    private FolderViewModel? _folderForLink = null;
+    private FileViewModel? _fileForLink = null;
     private BlazDriveViewModel _storage;
     private FolderViewModel _currentFolder;
     private FolderViewModel? _destinationFolder;
     private IList<FolderViewModel> _expandedNodes = new List<FolderViewModel>();
     private List<FolderViewModel> _currentPath = [];
     private string _newFolderName;
+    private string? _linkPassword;
+    
+    private DateTime? _expireTime;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -312,6 +346,18 @@
         
     }
 
+    private async Task CreateLinkFileClick(FileViewModel file, DateTime? expirationDate, string? password)
+    {
+        var r = await _blazDriveService.GenerateLinkFile(file.Id, file.RootFolderId, file.Name, await _accountInfoService.GetGuid(), password, expirationDate);
+        _newFolderName = r.ToString();
+    }
+
+    private async Task CreateLinkFolderClick(FolderViewModel folder, DateTime? expirationDate, string? password)
+    {
+        var r = await _blazDriveService.GenerateLinkFolder(folder.Id, folder.RootFolderId, folder.Name, await _accountInfoService.GetGuid(), password, expirationDate);
+        _newFolderName = r.ToString();
+    }
+
     private void ChangeCurrentFolder(FolderViewModel folder)
     {
         foreach (var f in _storage.Folders)
@@ -326,7 +372,29 @@
     {
         _showFolderNameField = !_showFolderNameField;
     }
-    
+
+    private void HideLinkModal()
+    {
+        _showLinkModal = "none;";
+        _modalStateLink = null;
+        _folderForLink = null;
+        _fileForLink = null;
+    }
+
+    private void ShowLinkModalFile(FileViewModel f)
+    {
+        _fileForLink = f;
+        _modalStateLink = ModalStateLink.File;
+        _showLinkModal = "block;";
+    }
+
+    private void ShowLinkModalFolder(FolderViewModel f)
+    {
+        _folderForLink = f;
+        _modalStateLink = ModalStateLink.Folder;
+        _showLinkModal = "block;";
+    }
+
     private void HideFolderModal()
     {
         _showFolderModal = "none;";
@@ -359,5 +427,4 @@
         res.Reverse();
         _currentPath = res;
     }
-
 }

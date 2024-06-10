@@ -8,6 +8,7 @@ namespace BlazDrive.Data
         public DbSet<Folder> Folders { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Models.Entities.File> Files { get; set; }
+        public DbSet<DownloadLink> DownloadLinks { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

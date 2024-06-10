@@ -19,7 +19,7 @@ namespace BlazDrive.Data.Repositories
             }
         }
 
-        public async void Delete(Drive.File entity)
+        public async void DeleteAsync(Drive.File entity)
         {
             using (var context = _contextFactory.CreateDbContext())
             {

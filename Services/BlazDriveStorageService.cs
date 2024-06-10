@@ -1,14 +1,18 @@
 using System.IO.Compression;
+using System.Runtime.CompilerServices;
 using BlazDrive.Data;
 using BlazDrive.Data.Repositories;
 using BlazDrive.Models;
 using BlazDrive.Models.Entities;
 using BlazDrive.Models.OutputModels;
 using BlazDrive.Models.ViewModels;
+using Blazorise;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using SimpleCrypto;
 
 namespace BlazDrive.Services
 {
@@ -16,6 +20,7 @@ namespace BlazDrive.Services
     {
         private FolderRepository _folderRepo;
         private FileRepository _fileRepo;
+        private DownloadLinkRepository _downloadLinkRepo;
         private FileEncryptionService _fileEncryption;
         private IMemoryCache _cache;
 
@@ -27,6 +32,7 @@ namespace BlazDrive.Services
         {
             _folderRepo = new FolderRepository(contextFactory);
             _fileRepo = new FileRepository(contextFactory);
+            _downloadLinkRepo = new DownloadLinkRepository(contextFactory);
             _fileEncryption = fileEncryptionService;
             _cache = cache;
         }
@@ -122,7 +128,7 @@ namespace BlazDrive.Services
             foreach (var file in files)
             {
                 System.IO.File.Delete($"Storage/{await GetFileRootFolder(file.Id)}/{file.Id}");
-                _fileRepo.Delete(file);
+                _fileRepo.DeleteAsync(file);
             }
             
             FoldersToRemove.Add(folder);
@@ -135,7 +141,7 @@ namespace BlazDrive.Services
 
             foreach (var x in FoldersToRemove)
             {                
-                _folderRepo.Delete(x);
+                _folderRepo.DeleteAsync(x);
             }
             FoldersToRemove = [];
         }
@@ -147,7 +153,7 @@ namespace BlazDrive.Services
 
             foreach (var file in files)
             {
-                _fileRepo.Delete(file);
+                _fileRepo.DeleteAsync(file);
             }
 
             foreach (var folder in folders)
@@ -341,6 +347,104 @@ namespace BlazDrive.Services
             {
                 await PrepareDownloadFolderRecursive(rootFolderId, zip, folder.Id);
             }
+        }
+
+        public async Task<Guid> GenerateLinkFile(Guid fileId, Guid rootFolderId, string fileName, Guid userId, string? password, DateTime? expireDate)
+        {
+            byte[] fileArr = await _fileEncryption.DecryptFile(System.IO.File.ReadAllBytes($"Storage/{rootFolderId}/{fileId}"));
+            
+            var linkId = Guid.NewGuid();
+            PBKDF2 crypt = new()
+            {
+                PlainText = fileId.ToString(),
+                Salt = password is null ? userId.ToString() : password + userId.ToString(),
+            };
+            var key = crypt.Compute();
+            
+            using (var bw = new BinaryWriter(System.IO.File.Open($"Storage/Shared/{linkId}", FileMode.Create)))
+            {
+                bw.Write(await _fileEncryption.EncryptFile(fileArr, key));
+            }
+
+            if (password is not null)
+                password = BCrypt.Net.BCrypt.HashPassword(password);
+            var link = new DownloadLink(linkId, fileName, userId, expireDate, password, fileId);
+            await _downloadLinkRepo.AddAsync(link);
+            return linkId;
+        }
+
+        public async Task<Guid> GenerateLinkFolder(Guid folderId, Guid rootFolderId, string folderName, Guid userId, string? password, DateTime? expireDate)
+        {
+            using (var compressedFileStream = new MemoryStream())   
+            {
+                using (ZipArchive zip = new ZipArchive(compressedFileStream, ZipArchiveMode.Create, false))
+                {
+                    foreach (var file in await _fileRepo.GetByFolderId(folderId))
+                    {
+                        var zipEntry = zip.CreateEntry(file.Name);
+                        byte[] fileArr = await _fileEncryption.DecryptFile(System.IO.File.ReadAllBytes($"Storage/{rootFolderId}/{file.Id}"));
+                        using (var originalFileStream = new MemoryStream(fileArr))
+                        using (var zipEntryStream = zipEntry.Open()) {
+                            originalFileStream.CopyTo(zipEntryStream);
+                        }
+                    }
+
+                    foreach (var folder in await _folderRepo.GetByParentId(folderId))
+                    {
+                        await PrepareDownloadFolderRecursive(rootFolderId, zip, folder.Id);
+                    }
+                }
+                if (password is not null)
+                    password = BCrypt.Net.BCrypt.HashPassword(password);
+                
+                var linkId = Guid.NewGuid();
+                PBKDF2 crypt = new()
+                {
+                    PlainText = folderId.ToString(),
+                    Salt = password is null ? userId.ToString() : password + userId.ToString(),
+                };
+                var key = crypt.Compute();
+                
+                using (var bw = new BinaryWriter(System.IO.File.Open($"Storage/Shared/{linkId}", FileMode.Create)))
+                {
+                    bw.Write(await _fileEncryption.EncryptFile(compressedFileStream.ToArray(), key));
+                }
+
+                var link = new DownloadLink(linkId, folderName + ".zip", userId, expireDate, password, folderId);
+                await _downloadLinkRepo.AddAsync(link);
+                return linkId;
+            }
+        }
+
+        public async Task<DownloadLink?> GetLink(Guid linkid)
+        {
+            var l = await _downloadLinkRepo.GetByIdAsync(linkid);
+            if (l is null || l.ExpireTime is not null && l.ExpireTime < DateTime.Now)
+            {
+                return null;
+            }
+
+            return l;
+        }
+
+        public async Task<Guid> GetFileFromLink(DownloadLink l, string? password)
+        {
+            PBKDF2 crypt = new()
+            {
+                PlainText = l.FileId.ToString(),
+                Salt = password is null ? l.UserId.ToString() : password + l.UserId.ToString(),
+            };
+            var key = crypt.Compute();
+
+            var keyR = Guid.NewGuid();
+            var f = new OutputFile()
+            {
+                FileName = l.FileName,
+                File = await _fileEncryption.DecryptFile(System.IO.File.ReadAllBytes($"Storage/Shared/{l.Id}"), key),
+                UserId = l.UserId,
+            };
+            _cache.Set(keyR, f);
+            return keyR;
         }
 
         private async Task<List<string>> GetFolderPath(Guid folderId)

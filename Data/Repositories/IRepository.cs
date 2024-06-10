@@ -10,7 +10,7 @@ namespace BlazDrive.Data.Repositories
 
         Task AddAsync(TEntity entity);
 
-        void Delete(TEntity entity);
+        void DeleteAsync(TEntity entity);
 
         Task DeleteByIdAsync(Guid id);
 

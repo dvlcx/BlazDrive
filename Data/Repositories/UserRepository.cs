@@ -19,7 +19,7 @@ namespace BlazDrive.Data.Repositories
             }
         }
 
-        public void Delete(User entity)
+        public void DeleteAsync(User entity)
         {
             throw new NotImplementedException();
         }

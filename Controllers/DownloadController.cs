@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BlazDrive.Models.Entities;
 using BlazDrive.Models.OutputModels;
 using BlazDrive.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -20,8 +21,9 @@ namespace BlazDrive.Controllers
     {
         private IMemoryCache _cache;
         private AccountInfoService _accountInfoService;
+        private BlazDriveStorageService _storageService;
 
-        public DownloadController(IMemoryCache cache, AccountInfoService accountInfoService)
+        public DownloadController(IMemoryCache cache, AccountInfoService accountInfoService, BlazDriveStorageService blazDriveStorageService)
         {
             _cache = cache;
             _accountInfoService = accountInfoService;

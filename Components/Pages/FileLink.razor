@@ -1,0 +1,91 @@
+@page "/download/link/{id}"
+@using BlazDrive.Models.Entities
+@using BlazDrive.Models.OutputModels
+@rendermode @(new InteractiveServerRenderMode(false))
+
+@layout EmptyLayout
+@inject BlazDriveStorageService _storage
+@inject NavigationManager _navigation
+@inject IMemoryCache _cache
+
+<div class="text-center">
+    @if(_showPasswordInput)
+    {
+        <label>Password: </label>
+        <InputText @bind-Value="@_password" @onkeydown="@PasswordApplyClick"/>
+        @if(_invalidPassword)
+        {
+            <label class="text-danger">Invalid password!</label>
+        }
+    }
+    @if(_file is not null)
+    {
+        <body>              
+            <a id="linker" href="data:application/octet-stream;charset=utf-8;base64,@Convert.ToBase64String(_file.File)" download="@_file.FileName">Download</a>
+        </body>
+            <script>document.getElementById('linker').click()</script>
+    }
+</div>
+
+
+@code{
+    [Parameter]
+    public string? Id { get; set; }
+    private DownloadLink? _link;
+    private bool _showPasswordInput;
+    private bool _invalidPassword;
+    private string? _password;
+    private OutputFile? _file;
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id is null)
+        {
+            _navigation.NavigateTo("/StatusCode/404");
+            return;
+        }
+
+        try
+        {
+            _link = await _storage.GetLink(Guid.Parse(Id));
+        }
+        catch(FormatException)
+        {
+            _navigation.NavigateTo("/StatusCode/404");
+            return;
+        }
+
+        if(_link is null)
+        {
+            _navigation.NavigateTo("/StatusCode/404");
+            return;
+        }
+
+        if (_link.Password is null)
+        {
+            var key = await _storage.GetFileFromLink(_link, null);
+            _file = _cache.Get<OutputFile>(key);
+        }
+        else
+        {
+            _showPasswordInput = true;
+        }
+    }
+
+    private async Task PasswordApplyClick(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            if (_password is null)
+                return;
+            if (!BCrypt.Net.BCrypt.Verify(_password, _link.Password))
+            {
+                _invalidPassword = true;
+                return;
+            }
+            _invalidPassword = false;
+            _showPasswordInput = false;
+            var key = await _storage.GetFileFromLink(_link, _password);
+            _file = _cache.Get<OutputFile>(key);
+        }
+    }
+} 
