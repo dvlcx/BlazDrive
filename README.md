@@ -10,7 +10,7 @@ This is an application for storing files in the cloud. It has three layered arch
     * Folder-based file organization 
     * File and folder movement and copying 
     * Folder archiving upon download 
-    * **Sharing and Access Control:** 
+* **Sharing and Access Control:** 
     * Link creation for file sharing 
     * Password protection and expiration date settings
 
