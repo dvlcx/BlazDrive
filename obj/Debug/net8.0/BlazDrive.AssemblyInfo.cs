@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlazDrive")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+22ecd566a222efed62f6547071c7bc6c6b83d31d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6ea84d165f6cb1031f418be34ff92addff406920")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlazDrive")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlazDrive")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
