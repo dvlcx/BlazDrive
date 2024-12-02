@@ -12,8 +12,6 @@ namespace BlazDrive.Services
 
         public async Task<byte[]> EncryptFile(byte[] file)
         {   
-            // ICryptoNet cryptoNet = new CryptoNetAes();
-            // var key = cryptoNet.ExportKey();
             var key = await _accountInfo.GetEncryptionKey();
             CryptoNetAes encryptClient = new CryptoNetAes(key);
             var encrypt = encryptClient.EncryptFromBytes(file);
@@ -28,24 +26,26 @@ namespace BlazDrive.Services
             return decrypt;
         }
 
-        public async Task<byte[]> EncryptFile(byte[] file, string key)
+        public byte[] EncryptFile(byte[] file, string key)
         {   
-            var nkey = new string(key.Take(43).ToArray()) + "=";
-            var iv = new string(key.Skip(30).Take(22).ToArray()) + "==";
-            var c = $"<?xml version=\"1.0\" encoding=\"utf-16\"?>\n<AesKeyValue xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n  <key>{nkey}</key>\n  <iv>{iv}</iv>\n</AesKeyValue>";
-            CryptoNetAes encryptClient = new CryptoNetAes(c);
-            var encrypt = encryptClient.EncryptFromBytes(file);
+            var client = this.CreateCryptoClient(key);
+            var encrypt = client.EncryptFromBytes(file);
             return encrypt;
         }
 
-        public async Task<byte[]> DecryptFile(byte[] file, string key)
+        public byte[] DecryptFile(byte[] file, string key)
+        {
+            var client = this.CreateCryptoClient(key);
+            var decrypt = client.DecryptToBytes(file);
+            return decrypt;
+        }
+
+        private ICryptoNet CreateCryptoClient(string key)
         {
             var nkey = new string(key.Take(43).ToArray()) + "=";
             var iv = new string(key.Skip(30).Take(22).ToArray()) + "==";
             var c = $"<?xml version=\"1.0\" encoding=\"utf-16\"?>\n<AesKeyValue xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n  <key>{nkey}</key>\n  <iv>{iv}</iv>\n</AesKeyValue>";
-            ICryptoNet decryptClient = new CryptoNetAes(c);
-            var decrypt = decryptClient.DecryptToBytes(file);
-            return decrypt;
+            return new CryptoNetAes(c);
         }
     }
 }
