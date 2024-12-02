@@ -1,4 +1,5 @@
 using CryptoNet;
+using BlazDrive.Utils;
 
 namespace BlazDrive.Services
 {
@@ -42,9 +43,7 @@ namespace BlazDrive.Services
 
         private ICryptoNet CreateCryptoClient(string key)
         {
-            var nkey = new string(key.Take(43).ToArray()) + "=";
-            var iv = new string(key.Skip(30).Take(22).ToArray()) + "==";
-            var c = $"<?xml version=\"1.0\" encoding=\"utf-16\"?>\n<AesKeyValue xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n  <key>{nkey}</key>\n  <iv>{iv}</iv>\n</AesKeyValue>";
+            var c = EncryptionUtils.FormatAesKey(key);
             return new CryptoNetAes(c);
         }
     }
