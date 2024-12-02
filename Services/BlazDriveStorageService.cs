@@ -363,7 +363,7 @@ namespace BlazDrive.Services
             
             using (var bw = new BinaryWriter(System.IO.File.Open($"Storage/Shared/{linkId}", FileMode.Create)))
             {
-                bw.Write(await _fileEncryption.EncryptFile(fileArr, key));
+                bw.Write(_fileEncryption.EncryptFile(fileArr, key));
             }
 
             if (password is not null)
@@ -407,7 +407,7 @@ namespace BlazDrive.Services
                 
                 using (var bw = new BinaryWriter(System.IO.File.Open($"Storage/Shared/{linkId}", FileMode.Create)))
                 {
-                    bw.Write(await _fileEncryption.EncryptFile(compressedFileStream.ToArray(), key));
+                    bw.Write(_fileEncryption.EncryptFile(compressedFileStream.ToArray(), key));
                 }
 
                 var link = new DownloadLink(linkId, folderName + ".zip", userId, expireDate, password, folderId);
@@ -440,7 +440,7 @@ namespace BlazDrive.Services
             var f = new OutputFile()
             {
                 FileName = l.FileName,
-                File = await _fileEncryption.DecryptFile(System.IO.File.ReadAllBytes($"Storage/Shared/{l.Id}"), key),
+                File = _fileEncryption.DecryptFile(System.IO.File.ReadAllBytes($"Storage/Shared/{l.Id}"), key),
                 UserId = l.UserId,
             };
             _cache.Set(keyR, f);
