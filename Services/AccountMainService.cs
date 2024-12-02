@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleCrypto;
+using BlazDrive.Utils;
 
 namespace BlazDrive.Services
 {
@@ -50,9 +51,8 @@ namespace BlazDrive.Services
                 Salt = account.Id.ToString(),
             };
             Guid cryptKey = Guid.NewGuid();
-            var key = new string(crypt.Compute().Take(43).ToArray()) + "=";
-            var iv = new string(crypt.Compute().Skip(30).Take(22).ToArray()) + "==";
-            var c = $"<?xml version=\"1.0\" encoding=\"utf-16\"?>\n<AesKeyValue xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n  <key>{key}</key>\n  <iv>{iv}</iv>\n</AesKeyValue>";
+            
+            var c = EncryptionUtils.FormatAesKey(crypt.Compute());
 
             _cache.Set(cryptKey, c);
 
