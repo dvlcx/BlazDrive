@@ -1,15 +1,11 @@
 using System.IO.Compression;
-using System.Runtime.CompilerServices;
 using BlazDrive.Data;
 using BlazDrive.Data.Repositories;
 using BlazDrive.Models;
 using BlazDrive.Models.Entities;
 using BlazDrive.Models.OutputModels;
 using BlazDrive.Models.ViewModels;
-using Blazorise;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleCrypto;
@@ -109,8 +105,6 @@ namespace BlazDrive.Services
                 }         
             }
 
-            // Directory.CreateDirectory("Storage/" + path + nid);
-
             await _folderRepo.AddAsync(new Folder(
                 nid,
                 name,
@@ -137,12 +131,8 @@ namespace BlazDrive.Services
 
             FoldersToRemove.Reverse();
             
-            // Directory.Delete((await this.GetFolderPath(folderId)).Aggregate((i, j) => i + j), true);
-
             foreach (var x in FoldersToRemove)
-            {                
                 _folderRepo.DeleteAsync(x);
-            }
             FoldersToRemove = [];
         }
 
@@ -152,9 +142,7 @@ namespace BlazDrive.Services
             var files = await _fileRepo.GetByFolderId(folderId);
 
             foreach (var file in files)
-            {
                 _fileRepo.DeleteAsync(file);
-            }
 
             foreach (var folder in folders)
             {
@@ -172,15 +160,12 @@ namespace BlazDrive.Services
                     await file.OpenReadStream().CopyToAsync(ms);
                     var fileBytes = ms.ToArray();
                     var encrypted = await _fileEncryption.EncryptFile(fileBytes);
-                    
                 
                     var id = Guid.NewGuid();
                     using (var bw = new BinaryWriter(System.IO.File.Open($"Storage/{rootId}/{id}", FileMode.Create)))
                     {
                         bw.Write(encrypted);
-                        // await file.OpenReadStream().CopyToAsync(fs);
-                        FileType type = 
-                        file.Name.Split('.').Last() switch 
+                        FileType type = file.Name.Split('.').Last() switch 
                         {
                             "bmp" or "png" or "jpg" or "jpeg" or "webp" or "svg" =>  FileType.Image,
                             "mp4" or "avi" or "wmv" or "mkv" or "mov" or "amv" or "mpg" =>  FileType.Video,
@@ -205,7 +190,6 @@ namespace BlazDrive.Services
 
         public async Task DeleteFile(Guid fileId)
         {
-            // System.IO.File.Delete((await GetFilePath(fileId)).Aggregate((i, j) => i + j));
             System.IO.File.Delete($"Storage/{await GetFileRootFolder(fileId)}/{fileId}");
             await _fileRepo.DeleteByIdAsync(fileId);
         }
@@ -420,9 +404,7 @@ namespace BlazDrive.Services
         {
             var l = await _downloadLinkRepo.GetByIdAsync(linkid);
             if (l is null || l.ExpireTime is not null && l.ExpireTime < DateTime.Now)
-            {
                 return null;
-            }
 
             return l;
         }
@@ -455,9 +437,7 @@ namespace BlazDrive.Services
             {
                 tmp = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
                 if (tmp is not null)
-                {
-                    path.Add($"{tmp}/");
-                }         
+                    path.Add($"{tmp}/");         
             }
             path.Add("Storage/");
             path.Reverse();
@@ -473,9 +453,7 @@ namespace BlazDrive.Services
                 var folder = await _folderRepo.GetByIdAsync((Guid)tmp);
                 tmp = folder?.ParentFolderId;
                 if (tmp is not null)
-                {
-                    path.Add($"{folder.Name}/");
-                }         
+                    path.Add($"{folder.Name}/");    
             }
             path.Reverse();
             return path;
