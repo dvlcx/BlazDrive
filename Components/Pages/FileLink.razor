@@ -62,7 +62,7 @@
 
         if (_link.Password is null)
         {
-            var key = await _storage.GetFileFromLink(_link, null);
+            var key = _storage.GetFileFromLink(_link, null);
             _file = _cache.Get<OutputFile>(key);
         }
         else

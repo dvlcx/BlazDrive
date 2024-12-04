@@ -32,7 +32,10 @@ namespace BlazDrive.Data.Repositories
         {
             using (var context = _contextFactory.CreateDbContext())
             {
-                context.Files.Remove(await context.Files.FirstOrDefaultAsync(f => f.Id == id));
+                var file = await context.Files.FirstOrDefaultAsync(f => f.Id == id);
+                if (file is null)
+                    return;
+                context.Files.Remove(file);
                 await context.SaveChangesAsync();
             }        
         }
@@ -50,7 +53,7 @@ namespace BlazDrive.Data.Repositories
             }
         }
 
-        public async Task<Drive.File> GetByIdAsync(Guid id)
+        public async Task<Drive.File?> GetByIdAsync(Guid id)
         {
             using (var context  = _contextFactory.CreateDbContext())
             {

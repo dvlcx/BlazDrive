@@ -37,6 +37,8 @@ namespace BlazDrive.Services
         {
             BlazDriveViewModel = new();
             var folder = await _folderRepo.GetByIdAsync(folderId);
+            if (folder is null)
+                return;
             var files = await _fileRepo.GetByFolderId(folderId);
 
             BlazDriveViewModel.Folders.Add( 
@@ -117,6 +119,8 @@ namespace BlazDrive.Services
         public async Task DeleteFolder(Guid folderId)
         {
             var folder = await _folderRepo.GetByIdAsync(folderId);
+            if (folder is null)
+                return;
             var files = await _fileRepo.GetByFolderId(folderId);
 
             foreach (var file in files)
@@ -197,6 +201,8 @@ namespace BlazDrive.Services
         public async Task MoveFolder(Guid folderId, Guid destinationFolderId)
         {
             var folder  = await _folderRepo.GetByIdAsync(folderId);
+            if (folder is null)
+                return;
             folder.ParentFolderId = destinationFolderId;
             await _folderRepo.UpdateAsync(folder);
         }
@@ -204,6 +210,8 @@ namespace BlazDrive.Services
         public async Task CopyFolder(Guid folderId, Guid destinationFolderId)
         {
             var folder  = await _folderRepo.GetByIdAsync(folderId);
+            if (folder is null)
+                return;
             folder.ParentFolderId = destinationFolderId;
             folder.Id = Guid.NewGuid();
             folder.CreationDate = DateTime.Now;
@@ -236,6 +244,8 @@ namespace BlazDrive.Services
         public async Task MoveFile(Guid fileId, Guid destinationFolderId)
         {
             var file  = await _fileRepo.GetByIdAsync(fileId);
+            if (file is null)
+                return;
             file.ParentFolderId = destinationFolderId;
             await _fileRepo.UpdateAsync(file);
         }
@@ -243,6 +253,8 @@ namespace BlazDrive.Services
         public async Task CopyFile(Guid fileId, Guid destinationFolderId)
         {
             var file  = await _fileRepo.GetByIdAsync(fileId);
+            if (file is null)
+                return;
             file.ParentFolderId = destinationFolderId;
             file.Id = Guid.NewGuid();
             await _fileRepo.AddAsync(file);
@@ -250,16 +262,20 @@ namespace BlazDrive.Services
 
         public async Task RenameFile(Guid fileId, string newName)
         {
-            var f = await _fileRepo.GetByIdAsync(fileId);
-            f.Name = newName;
-            await _fileRepo.UpdateAsync(f);
+            var file = await _fileRepo.GetByIdAsync(fileId);
+            if (file is null)
+                return;
+            file.Name = newName;
+            await _fileRepo.UpdateAsync(file);
         }
         
         public async Task RenameFolder(Guid folderId, string newName)
         {
-            var f = await _folderRepo.GetByIdAsync(folderId);
-            f.Name = newName;
-            await _folderRepo.UpdateAsync(f);
+            var file = await _folderRepo.GetByIdAsync(folderId);
+            if (file is null)
+                return;
+            file.Name = newName;
+            await _folderRepo.UpdateAsync(file);
         }
 
         public async Task<Guid> PrepareDownloadFile(Guid fileId, Guid rootFolderId, string fileName, Guid userId)
@@ -409,7 +425,7 @@ namespace BlazDrive.Services
             return l;
         }
 
-        public async Task<Guid> GetFileFromLink(DownloadLink l, string? password)
+        public Guid GetFileFromLink(DownloadLink l, string? password)
         {
             PBKDF2 crypt = new()
             {
@@ -429,21 +445,6 @@ namespace BlazDrive.Services
             return keyR;
         }
 
-        private async Task<List<string>> GetFolderPath(Guid folderId)
-        {
-            List<string> path = [$"{folderId}"];
-            Guid? tmp = folderId;
-            while (tmp is not null)
-            {
-                tmp = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
-                if (tmp is not null)
-                    path.Add($"{tmp}/");         
-            }
-            path.Add("Storage/");
-            path.Reverse();
-            return path;
-        }
-
         private async Task<List<string>> GetFilePath(Models.Entities.File file)
         {
             List<string> path = [];
@@ -453,7 +454,7 @@ namespace BlazDrive.Services
                 var folder = await _folderRepo.GetByIdAsync((Guid)tmp);
                 tmp = folder?.ParentFolderId;
                 if (tmp is not null)
-                    path.Add($"{folder.Name}/");    
+                    path.Add($"{folder?.Name}/");    
             }
             path.Reverse();
             return path;
@@ -461,14 +462,14 @@ namespace BlazDrive.Services
 
         private async Task<string> GetFileRootFolder(Guid fileId)
         {
+            Guid? tmp = (await _fileRepo.GetByIdAsync(fileId))?.ParentFolderId;
             string rootFolderId = string.Empty;
-            Guid? tmp = (await _fileRepo.GetByIdAsync(fileId)).ParentFolderId;
             while (tmp is not null)
             {
                 var res = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
                 if (res is null)
                 {
-                    rootFolderId = tmp.ToString();
+                    rootFolderId = tmp.ToString() ?? rootFolderId;
                 }
                 tmp = res;  
             }
@@ -477,14 +478,14 @@ namespace BlazDrive.Services
 
         private async Task<string> GetFolderRootFolder(Guid folderId)
         {
+            Guid? tmp = (await _folderRepo.GetByIdAsync(folderId))?.ParentFolderId;
             string rootFolderId = folderId.ToString();
-            Guid? tmp = (await _folderRepo.GetByIdAsync(folderId)).ParentFolderId;
             while (tmp is not null)
             {
                 var res = (await _folderRepo.GetByIdAsync((Guid)tmp))?.ParentFolderId;
                 if (res is null)
                 {
-                    rootFolderId = tmp.ToString();
+                    rootFolderId = tmp.ToString() ?? rootFolderId;
                 }
                 tmp = res;  
             }
